@@ -1,7 +1,7 @@
 Feature: Sahibinden Yepy Renewed Phone Filters
 
 
-  @YEPY_FILTERS @TESTt
+  @YEPY_FILTERS @TEST
   Scenario: Sahibinden Yepy Filter Phone Number and Actual Phone Number Control
     * Go to url
     * Click "CEREZLERI_KABUL_ET_BUTON"
@@ -19,7 +19,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
     * Assert that previous element number equal "AVAILABLE_PHONE_NUMBER_ON_HEADER" this number
 
 
-  @YEPY_FILTERS @TESTt
+  @YEPY_FILTERS @TEST
   Scenario: Sahibinden Yepy Min Price Control
     * Go to url
     * Click "CEREZLERI_KABUL_ET_BUTON"
@@ -53,6 +53,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
    # * Wait 1 seconds
     * Click "SORTING_ARROW_BUTTON"
     * Click "FIYAT_YUKSEKTEN_DUSUGE_BUTTON"
+    * Wait 3 seconds
     * Assert that number of "FIRST_ITEM_PRICE" element is lower than or equal "12000"
 
 

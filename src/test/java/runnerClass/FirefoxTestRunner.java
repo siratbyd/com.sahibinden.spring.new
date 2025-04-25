@@ -7,7 +7,11 @@ import org.junit.platform.suite.api.*;
 @IncludeEngines("cucumber")
 @SelectDirectories("src/test/resources")
 @ConfigurationParameter(key = "cucumber.glue", value = "stepDefinitions")
-@ConfigurationParameter(key = "cucumber.plugin", value = "pretty, html:target/edge-report.html")
+@ConfigurationParameter(
+        key = "cucumber.plugin",
+        value = "pretty, html:target/firefox-report.html, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
+)
+@ConfigurationParameter(key = "allure.results.directory", value = "target/allure-results-firefox")
 @ConfigurationParameter(key = "cucumber.filter.tags", value = "@TEST")
 
 public class FirefoxTestRunner {

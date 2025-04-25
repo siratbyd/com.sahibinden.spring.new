@@ -11,7 +11,7 @@ Feature: Sahibinden Yepy homepage
         * Assert that "YENILENMIS_TELEFON_AL_BUTON" element is visible
         * Assert that "KENDI_TELEFONUNU_SAT_BUTON" element is visible
 
-    @YEPY_HOMEPAGE @TESTt
+    @YEPY_HOMEPAGE @TEST
     Scenario: Sahibinden Yepy "Yenilenmiş Telefon Al" Landing Page UI Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"
