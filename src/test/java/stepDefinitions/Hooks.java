@@ -8,7 +8,7 @@ public class Hooks {
 
     @Before
     public void setUp() {
-        String browser = System.getProperty("browser", "chrome");
+        String browser = System.getProperty("browser");
         DriverManager.getDriver(browser);
         System.out.println(" Browser started: " + browser);
     }

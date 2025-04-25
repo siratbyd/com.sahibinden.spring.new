@@ -24,30 +24,8 @@ public class AutomationMethods {
 
 
 
+    static String browser = System.getProperty("browser"); // Default 'chrome' tarayıcısı
 
-
-    static String browser = System.getProperty("browser", "chrome"); // Default 'chrome' tarayıcısı
-
-
-//    public static void click(String element) throws Exception {
-//        By xpath = ElementManager.getLocatorFromJson(element);
-//        DriverManager.getDriver(browser).findElement(xpath).click();
-//    }
-//
-//    public static boolean isElementVisibilityWithSize(String element) throws IOException {
-//
-//        By xpath = ElementManager.getLocatorFromJson(element);
-//        try {
-//            WebDriver driver = DriverManager.getDriver(browser);
-//            WebElement webElement = driver.findElement(xpath);
-//
-//            // Eğer element görünürse ve boyutu sıfırdan büyükse true döndür
-//            return webElement.isDisplayed() && webElement.getSize().getHeight() > 0 && webElement.getSize().getWidth() > 0;
-//        } catch (NoSuchElementException | StaleElementReferenceException e) {
-//            return false; // Element yoksa veya erişilemezse false döndür
-//        }
-//
-//    }
 
     public static boolean waitForElementToBeVisible(String element, int timeoutInSeconds) throws IOException {
         By xpath = ElementManager.getLocatorFromJson(element);
@@ -88,51 +66,88 @@ public class AutomationMethods {
         for (String window : allWindows) {
             if (!window.equals(currentWindow)) {
                 driver.switchTo().window(window); // Yeni pencereye geçiş yap
-                System.out.println("Yeni pencereye geçildi: " + driver.getTitle());
+                System.out.println("Changed window: " + driver.getTitle());
                 return;
             }
         }
         System.out.println("Yeni pencere bulunamadı!");
     }
 
-//    public static String getText(String element) throws IOException {
-//        By xpath = ElementManager.getLocatorFromJson(element);
-//
-//        try {
-//            WebElement webElement = DriverManager.getDriver(browser).findElement(xpath);
-//            return webElement.getText().trim(); // Boşlukları temizleyerek döndür
-//        } catch (Exception e) {
-//            System.out.println("Element bulunamadı: " + xpath.toString());
-//            return ""; // Element bulunamazsa boş string döndür
-//        }
-//    }
 
 
     public static void waitAndClick(String element) throws IOException {
-        By xpath = ElementManager.getLocatorFromJson(element);
-        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(browser), Duration.ofSeconds(100));
-        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(xpath));
-        webElement.click();
+//        By xpath = ElementManager.getLocatorFromJson(element);
+//        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(browser), Duration.ofSeconds(100));
+//        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(xpath));
+//        webElement.click();
+        WebDriver driver = DriverManager.getDriver(); // Burada browser parametresine ihtiyaç yok!
+        By locator = ElementManager.getLocatorFromJson(element);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+        try {
+            WebElement webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+
+            // Scroll into view
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", webElement);
+
+            webElement.click();
+
+            System.out.println("✅ Successfully clicked on: " + element);
+
+        } catch (Exception e) {
+            System.out.println("⚠️ Normal click failed, trying JavaScript click...");
+
+            WebElement webElement = driver.findElement(locator);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", webElement);
+        }
     }
 
-//    public static void waitForPageLoadOrStop(int timeoutInSeconds) {
-//        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(browser), Duration.ofSeconds(timeoutInSeconds));
-//        try {
-//            wait.until(webDriver -> ((JavascriptExecutor) webDriver)
-//                    .executeScript("return document.readyState").equals("complete"));
-//        } catch (TimeoutException e) {
-//            System.out.println("Sayfa yüklenmedi, yükleme işlemi iptal ediliyor...");
-//            ((JavascriptExecutor) DriverManager.getDriver(browser)).executeScript("window.stop();"); // Sayfa yüklemesini iptal et
-//        }
-//    }
-//
-//    public static void sleep(int seconds) {
-//        try {
-//            Thread.sleep(seconds * 1000L); // Milisaniyeye çevir
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt(); // Thread'i tekrar interrupt duruma al
-//            System.out.println("Sleep işlemi kesildi: " + e.getMessage());
-//        }
-//    }
+    public static void assertElementContainsText(String key, String expectedText) throws Exception {
+        WebElement element = ElementManager.findElement(key);
+        String actualText = element.getText().trim();
+
+        if (!actualText.contains(expectedText)) {
+            throw new AssertionError(" Expected text error!\nExpected: " + expectedText + "\nActual: " + actualText);
+        }
+
+        System.out.println(" Success: " + expectedText);
+    }
+
+    public static void assertElementIsClickable(String key) throws Exception {
+        WebDriver driver = DriverManager.getDriver(System.getProperty("browser", "chrome"));
+        By locator = ElementManager.getLocatorFromJson(key);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+            System.out.println(" Element is clickable: " + key);
+        } catch (TimeoutException e) {
+            throw new AssertionError("Element is not clickable: " + key);
+        }
+    }
+
+    public static WebElement findElement(String key) throws Exception {
+        return ElementManager.findElement(key);
+    }
+
+    public static void sendKeysToElement(String key, String text) throws Exception {
+        WebElement element = findElement(key);
+
+        try {
+            element.click();  // bazen tıklayınca aktif olur
+        } catch (Exception e) {
+            System.out.println("Element tıklanamadı, direkt yazılacak");
+        }
+
+
+        element.clear();       // Önce varsa içindeki yazıyı temizler
+        element.sendKeys(text); // Sonra istediğin yazıyı yazar
+        System.out.println("Text sent to element [" + key + "]: " + text);
+    }
+
+
 
 }

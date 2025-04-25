@@ -14,7 +14,7 @@ public class TestBase {
 
     @Before
     public void setup() {
-        browser = System.getProperty("browser", "chrome"); // Varsayılan chrome
+        browser = System.getProperty("browser"); // Varsayılan chrome
         driver = DriverManager.getDriver(browser);
     }
 

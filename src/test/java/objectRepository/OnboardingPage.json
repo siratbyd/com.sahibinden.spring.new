@@ -8,16 +8,11 @@
         "element_type": "id"
     },
     "YENILENMIS_TELEFON_AL_BUTON": {
-        "element_value": "a[href*='yenilenmis-telefonlar']",
-        "element_type": "css"
+        "element_value": "//a[text()='Yenilenmiş telefon al']",
+        "element_type": "xpath"
     },
     "KENDI_TELEFONUNU_SAT_BUTON": {
         "element_value": "a[href='https://www.sahibinden.com/yepy/telefon-sat?referrer=LandingPage_SellNowClick']",
         "element_type": "css"
-    },
-    "YEPY_LOGO": {
-        "element_value": "//div[@class='yepy-banner-logo']",
-        "element_type": "xpath"
     }
-
 }

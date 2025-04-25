@@ -25,6 +25,14 @@ public class DriverManager {
 
 
     public static WebDriver getDriver(String browserType) {
+
+        if (browserType == null || browserType.isEmpty()) {
+            browserType = "chrome";  // fallback garanti chrome
+            System.out.println("'browser' null geldi, default olarak 'chrome' seçildi.");
+        }
+
+
+
         if (driver.get() == null) {  // Eğer thread'deki driver null ise
             switch (browserType.toLowerCase()) {
                 case "chrome":
@@ -40,7 +48,7 @@ public class DriverManager {
                 case "firefox":
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
                     firefoxOptions.addPreference("dom.webnotifications.enabled", false);
-                    firefoxOptions.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 SahibindenOtomasyon/da1f7dbf5c7842819cb75d6a25362611");
+                    firefoxOptions.addPreference("general.useragent.override", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 SahibindenOtomasyon/da1f7dbf5c7842819cb75d6a25362611");
                     WebDriverManager.firefoxdriver().setup();
                     driver.set(new FirefoxDriver(firefoxOptions));  // Firefox driver'ı oluştur
                     break;
@@ -89,5 +97,8 @@ public class DriverManager {
             driver.get().quit();
             driver.remove();  //Threadlocal driver'ı temizlemek için
         }
+    }
+    public static WebDriver getDriver() {
+        return driver.get();
     }
 }

@@ -1,0 +1,90 @@
+{
+    "BANNER_YEPY_LOGO": {
+        "element_value": "//div[@class='yepy-banner-logo']",
+        "element_type": "xpath"
+    },
+    "BANNER_TEXT": {
+        "element_value": "//div[@class='yepy-banner-content sui-global-heading-h3']",
+        "element_type": "xpath"
+    },
+    "BANNER_PHONE_PHOTO": {
+        "element_value": "//div[@class='yepy-banner-phones']//img",
+        "element_type": "xpath"
+    },
+    "HEADER_YENILENMIS_CEP_TELEFONLARI": {
+        "element_value": "//h1[@class='sui-global-surface-page-title']",
+        "element_type": "xpath"
+    },
+    "KATEGORILER_SECTION": {
+        "element_value": "search_cats",
+        "element_type": "id"
+    },
+    "FIYAT_SECTION": {
+        "element_value": "searchResultLeft-price",
+        "element_type": "id"
+    },
+    "KOZMETIK_DURUM_SECTION": {
+        "element_value": "searchResultLeft-r-condition",
+        "element_type": "id"
+    },
+    "RENK_SECTION": {
+        "element_value": "searchResultLeft-a86470",
+        "element_type": "id"
+    },
+    "DEPOLAMA_KAPASITESI_SECTION": {
+        "element_value": "searchResultLeft-a101170",
+        "element_type": "id"
+    },
+    "SEARCH_BUTTON": {
+        "element_value": "//button[@class='sui-button search-submit']",
+        "element_type": "xpath"
+    },
+    "GELISMIS_SIRALAMA_DROPDOWN": {
+        "element_value": "advancedSorting",
+        "element_type": "id"
+    },
+    "FILTER_APPLE_BUTTON": {
+        "element_value": "//h2[normalize-space()='Apple']",
+        "element_type": "xpath"
+    },
+    "APPLE_SECTION_TEXTBUTTON": {
+        "element_value": "//span[@class='sui-global-surface-body-sm-semibold sui-color-emphasis-high text']",
+        "element_type": "xpath"
+    },
+    "YENILENMIS_APPLE_HEADER": {
+        "element_value": "//h1[@class='sui-global-surface-page-title']",
+        "element_type": "xpath"
+    },
+    "AVAILABLE_PHONE_NUMBER_ON_FILTER": {
+        "element_value": "//span[normalize-space()='(196)']",
+        "element_type": "xpath"
+    },
+    "AVAILABLE_PHONE_NUMBER_ON_HEADER": {
+        "element_value": "//p[@class='sui-badge__text']",
+        "element_type": "xpath"
+    },
+    "EN_DUSUK_FIYAT_TEXT_BOX": {
+        "element_value": "//input[@placeholder='En düşük']",
+        "element_type": "xpath"
+    },
+    "EN_YUKSEK_FIYAT_TEXT_BOX": {
+        "element_value": "//input[@placeholder='En yüksek']",
+        "element_type": "xpath"
+    },
+    "SORTING_ARROW_BUTTON": {
+        "element_value": "//i[@class='sui-i-arrow_down sui-global-surface-body-lead me-4']",
+        "element_type": "xpath"
+    },
+    "FIYAT_DUSUKTEN_YUKSEGE_BUTTON": {
+        "element_value": "//a[@title='Fiyat: Düşükten yükseğe']",
+        "element_type": "xpath"
+    },
+    "FIYAT_YUKSEKTEN_DUSUGE_BUTTON": {
+        "element_value": "//a[@title='Fiyat: Yüksekten düşüğe']",
+        "element_type": "xpath"
+    },
+    "FIRST_ITEM_PRICE": {
+        "element_value": "(//div[contains(@class, 'classified-price-container')])[1]/span",
+        "element_type": "xpath"
+    }
+}

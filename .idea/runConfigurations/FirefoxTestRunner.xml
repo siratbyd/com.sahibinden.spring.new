@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FirefoxTestRunner" type="JUnit" factoryName="JUnit">
+    <module name="com.sahibinden.auto" />
+    <option name="PACKAGE_NAME" value="runnerClass" />
+    <option name="MAIN_CLASS_NAME" value="runnerClass.FirefoxTestRunner" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-Dbrowser=firefox" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
