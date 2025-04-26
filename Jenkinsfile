@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'curl -s http://selenium-hub:4444/wd/hub/status | grep "\"ready\":true"'
+                        sh 'curl -s http://localhost:4444/wd/hub/status | grep "\"ready\":true"'
                         echo "Selenium Grid hazır durumda."
                     } catch (Exception e) {
                         error "Selenium Grid hazır değil! Lütfen grid'in çalıştığından emin olun."
