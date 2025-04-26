@@ -1,0 +1,7 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Apr 26 18:02:42 TRT 2025","Sat Apr 26 18:03:27 TRT 2025","44632","","Sahibinden Yepy Renewed Phone Filters","","Sahibinden Yepy Min Price Control","","Sahibinden Yepy Min Price Control",""
+"passed","Sat Apr 26 18:02:41 TRT 2025","Sat Apr 26 18:03:34 TRT 2025","52376","","Sahibinden Yepy Renewed Phone Filters","","Sahibinden Yepy Max Price Control","","Sahibinden Yepy Max Price Control",""
+"passed","Sat Apr 26 08:01:51 TRT 2025","Sat Apr 26 08:01:51 TRT 2025","25","","utils.AllureTestRunner","","utils.AllureTestRunner","allureTestRaporuOlustur","allureTestRaporuOlustur()",""
+"broken","Sat Apr 26 18:02:42 TRT 2025","Sat Apr 26 18:03:28 TRT 2025","45894","","Sahibinden Yepy Renewed Phone Filters","","Sahibinden Yepy Filter Phone Number and Actual Phone Number Control","","Sahibinden Yepy Filter Phone Number and Actual Phone Number Control",""
+"passed","Sat Apr 26 13:58:39 TRT 2025","Sat Apr 26 13:58:52 TRT 2025","12280","","Sahibinden Yepy homepage","","Sahibinden Yepy Onboarding Page Control","","Sahibinden Yepy Onboarding Page Control",""
+"passed","Sat Apr 26 18:02:41 TRT 2025","Sat Apr 26 18:03:26 TRT 2025","45142","","Sahibinden Yepy homepage","","Sahibinden Yepy ""Yenilenmiş Telefon Al"" Landing Page UI Control","","Sahibinden Yepy ""Yenilenmiş Telefon Al"" Landing Page UI Control",""
