@@ -289,8 +289,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
                 <configuration>
-                    <parallel>classes</parallel>  <!-- Sınıf bazlı paralellik -->
-                    <useUnlimitedThreads>true</useUnlimitedThreads>  <!-- Thread sınırı yok -->
+                    <parallel>classes</parallel>
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
                     <testFailureIgnore>true</testFailureIgnore>
                     <systemPropertyVariables>
                         <cucumber.publish.quiet>true</cucumber.publish.quiet>
@@ -300,9 +300,10 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
+                    <!-- Düzeltilmiş properties kısmı -->
                     <properties>
                         <property>
-                            <n>listener</n>
+                            <name>listener</name>
                             <value>io.qameta.allure.junit5.AllureJunit5</value>
                         </property>
                     </properties>

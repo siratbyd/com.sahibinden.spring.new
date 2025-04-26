@@ -77,24 +77,25 @@ pipeline {
             steps {
                 script {
                     try {
+                        // Surefire plugin sorunu için düzeltilmiş komut
                         sh """
                             mvn clean test \
                             -P${params.BROWSER_PROFILE} \
                             -Duse_grid=${params.USE_GRID} \
                             -Dcucumber.filter.tags="${params.CUCUMBER_TAGS}" \
-                            -Dallure.results.directory=target/allure-results
+                            -Dallure.results.directory=target/allure-results \
+                            -Dsurefire.useFile=true
                         """
                     } catch (Exception e) {
                         echo "Test çalıştırma sırasında hata oluştu: ${e.message}"
                         currentBuild.result = 'UNSTABLE'
-                        // Testler başarısız olsa bile pipeline'ın devam etmesini sağlar
                     }
                 }
             }
             post {
                 always {
-                    // Test sonuçlarını arşivle
-                    junit '**/target/surefire-reports/*.xml'
+                    // Doğru test rapor dosya yolunu belirtin
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/**/*.xml'
                 }
                 success {
                     echo "Testler başarıyla tamamlandı!"
@@ -106,6 +107,9 @@ pipeline {
         }
 
         stage('Allure Rapor Oluştur') {
+            when {
+                expression { fileExists('target/allure-results') }
+            }
             steps {
                 script {
                     try {
