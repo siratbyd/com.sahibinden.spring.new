@@ -54,15 +54,11 @@ pipeline {
             }
         }
 
-        tage('Allure Rapor Oluştur') {
+        stage('Allure Rapor Oluştur') {
             steps {
-                allure([
-               includeProperties: false,
-               jdk: '',
-               properties: [],
-               reportBuildPolicy: 'ALWAYS',
-               results: [[path: 'target/allure-results']]
-              ])
+                withMaven(maven: 'Maven') {
+                    sh 'mvn allure:report'
+                }
             }
         }
     }
