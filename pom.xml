@@ -300,13 +300,15 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                    <!-- Düzeltilmiş properties kısmı -->
+                    <!-- JUNT4 VE 5 CAKIŞMASI -->
+                    <!--
                     <properties>
                         <property>
                             <name>listener</name>
                             <value>io.qameta.allure.junit5.AllureJunit5</value>
                         </property>
                     </properties>
+                    -->
                 </configuration>
                 <dependencies>
                     <dependency>

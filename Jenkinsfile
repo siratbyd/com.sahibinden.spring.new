@@ -77,14 +77,14 @@ pipeline {
             steps {
                 script {
                     try {
-                        // Surefire plugin sorunu için düzeltilmiş komut
+                        // Düzeltilmiş Maven komutu
                         sh """
                             mvn clean test \
                             -P${params.BROWSER_PROFILE} \
                             -Duse_grid=${params.USE_GRID} \
                             -Dcucumber.filter.tags="${params.CUCUMBER_TAGS}" \
                             -Dallure.results.directory=target/allure-results \
-                            -Dsurefire.useFile=true
+                            -Dcucumber.plugin=io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm
                         """
                     } catch (Exception e) {
                         echo "Test çalıştırma sırasında hata oluştu: ${e.message}"
@@ -94,7 +94,6 @@ pipeline {
             }
             post {
                 always {
-                    // Doğru test rapor dosya yolunu belirtin
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/**/*.xml'
                 }
                 success {
@@ -133,23 +132,6 @@ pipeline {
         always {
             script {
                 // Temizlik işlemleri
-                try {
-                    if (params.USE_GRID) {
-                        echo "Selenium Grid kapatılıyor..."
-                        sh """
-                            if [ -f "stop-grid.sh" ]; then
-                                chmod +x stop-grid.sh
-                                ./stop-grid.sh
-                            elif [ -f "stop-grid.bat" ]; then
-                                stop-grid.bat
-                            fi
-                        """
-                    }
-                } catch (Exception e) {
-                    echo "Grid kapatma sırasında hata: ${e.message}"
-                }
-
-                // Çalışma alanını temizle
                 cleanWs()
             }
         }
