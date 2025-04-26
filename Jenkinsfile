@@ -77,14 +77,14 @@ pipeline {
             steps {
                 script {
                     try {
-                        // Düzeltilmiş Maven komutu
+                        // Surefire plugin sorunu için düzeltilmiş komut
                         sh """
                             mvn clean test \
                             -P${params.BROWSER_PROFILE} \
                             -Duse_grid=${params.USE_GRID} \
                             -Dcucumber.filter.tags="${params.CUCUMBER_TAGS}" \
                             -Dallure.results.directory=target/allure-results \
-                            -Dcucumber.plugin=io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm
+                            -Dsurefire.useFile=true
                         """
                     } catch (Exception e) {
                         echo "Test çalıştırma sırasında hata oluştu: ${e.message}"
@@ -94,35 +94,36 @@ pipeline {
             }
             post {
                 always {
+                    // Test sonuçları
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/**/*.xml'
-                }
-                success {
-                    echo "Testler başarıyla tamamlandı!"
-                }
-                unstable {
-                    echo "Testler tamamlandı fakat hatalar mevcut!"
+
+                    // Allure dizini yoksa oluştur
+                    sh 'mkdir -p target/allure-results || true'
                 }
             }
         }
 
         stage('Allure Rapor Oluştur') {
-            when {
-                expression { fileExists('target/allure-results') }
-            }
             steps {
                 script {
-                    try {
-                        allure([
-                            includeProperties: false,
-                            jdk: '',
-                            properties: [],
-                            reportBuildPolicy: 'ALWAYS',
-                            results: [[path: 'target/allure-results']]
-                        ])
-                    } catch (Exception e) {
-                        echo "Allure raporu oluşturulamadı: ${e.message}"
-                        unstable(message: "Allure raporu oluşturulamadı")
-                    }
+                    // Allure sonuçlarını kontrol et
+                    sh 'ls -la target/allure-results || echo "Allure sonuçları bulunamadı"'
+
+                    // Boş bir Allure sonuç dosyası oluştur (dizin boşsa)
+                    sh '''
+                        if [ -z "$(ls -A target/allure-results 2>/dev/null)" ]; then
+                            echo '{"name":"Test Çalıştırma","status":"failed","statusDetails":{"message":"Test sonucu bulunamadı"}}' > target/allure-results/dummy-result.json
+                        fi
+                    '''
+
+                    // Allure raporu oluştur
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'target/allure-results']]
+                    ])
                 }
             }
         }
@@ -131,6 +132,21 @@ pipeline {
     post {
         always {
             script {
+                try {
+                    // Allure raporu oluşturmayı tekrar dene (eğer önceki adımda başarısız olduysa)
+                    if (currentBuild.resultIsBetterOrEqualTo('UNSTABLE')) {
+                        allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                            reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'target/allure-results']]
+                        ])
+                    }
+                } catch (Exception e) {
+                    echo "Allure raporu oluşturulamadı: ${e.message}"
+                }
+
                 // Temizlik işlemleri
                 cleanWs()
             }
