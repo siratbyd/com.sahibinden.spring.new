@@ -9,34 +9,65 @@ pipeline {
     parameters {
         choice(name: 'BROWSER_PROFILE', choices: ['parallel-browsers', 'chrome', 'firefox', 'edge', 'all-browsers'], description: 'Hangi tarayıcı profili ile testler koşulsun?')
         booleanParam(name: 'USE_GRID', defaultValue: true, description: 'Selenium Grid kullanılsın mı?')
+        string(name: 'CUCUMBER_TAGS', defaultValue: '@TEST', description: 'Çalıştırılacak Cucumber tag\'leri (örn: @TEST veya @smoke or @regression)')
+    }
+
+    environment {
+        SELENIUM_GRID_URL = 'http://localhost:4444/wd/hub'
     }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+                echo "Branch: ${env.BRANCH_NAME ?: 'Detached'}"
+                echo "Tarayıcı Profili: ${params.BROWSER_PROFILE}"
+                echo "Cucumber Tags: ${params.CUCUMBER_TAGS}"
             }
         }
 
-         stage('Selenium Grid Kontrol') {
+        stage('Build ve Dependencyleri İndir') {
+            steps {
+                sh 'mvn dependency:go-offline -B'
+            }
+        }
+
+        stage('Selenium Grid Kontrol') {
+            when {
+                expression { params.USE_GRID == true }
+            }
             steps {
                 script {
                     try {
-                        def status = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
-                   if (status != 0) {
-                            // Grid başlatma seçeneği
-                       echo "Selenium Grid hazır değil, başlatılmaya çalışılıyor..."
-                       sh 'sh ./start-grid.sh || echo "Grid başlatılamadı"'
-                       // Başlatma sonrası tekrar kontrol
-                       status = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
-                       if (status != 0) {
-                                error "Selenium Grid başlatılamadı!"
-                       }
-                   }
-               } catch (Exception e) {
-                        echo "Grid kontrolünde hata: ${e.message}"
-                   // Test adımına devam etmek için hata fırlatmayı kaldırabilirsiniz
-                   // veya burada grid'i başlatabilirsiniz
+                        def gridStatus = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
+                        if (gridStatus != 0) {
+                            echo "Selenium Grid hazır değil, başlatılmaya çalışılıyor..."
+                            // Grid başlatma
+                            sh """
+                                if [ -f "start-grid.sh" ]; then
+                                    chmod +x start-grid.sh
+                                    ./start-grid.sh
+                                elif [ -f "start-grid.bat" ]; then
+                                    start-grid.bat
+                                else
+                                    echo "Grid başlatma scriptleri bulunamadı!"
+                                    exit 1
+                                fi
+                            """
+
+                            // Grid hazır olana kadar bekleme
+                            timeout(time: 2, unit: 'MINUTES') {
+                                waitUntil {
+                                    def status = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
+                                    return status == 0
+                                }
+                            }
+                        }
+
+                        echo "Selenium Grid hazır!"
+                    } catch (Exception e) {
+                        echo "Selenium Grid kontrolünde hata: ${e.message}"
+                        error "Selenium Grid hazır değil! Lütfen grid'in çalıştığından emin olun."
                     }
                 }
             }
@@ -45,19 +76,50 @@ pipeline {
         stage('Testleri Çalıştır') {
             steps {
                 script {
-                    def useGrid = params.USE_GRID ? "-Duse_grid=true" : "-Duse_grid=false"
-                    
-                    withMaven(maven: 'Maven') {
-                        sh "mvn clean test ${useGrid} -P${params.BROWSER_PROFILE}"
+                    try {
+                        sh """
+                            mvn clean test \
+                            -P${params.BROWSER_PROFILE} \
+                            -Duse_grid=${params.USE_GRID} \
+                            -Dcucumber.filter.tags="${params.CUCUMBER_TAGS}" \
+                            -Dallure.results.directory=target/allure-results
+                        """
+                    } catch (Exception e) {
+                        echo "Test çalıştırma sırasında hata oluştu: ${e.message}"
+                        currentBuild.result = 'UNSTABLE'
+                        // Testler başarısız olsa bile pipeline'ın devam etmesini sağlar
                     }
+                }
+            }
+            post {
+                always {
+                    // Test sonuçlarını arşivle
+                    junit '**/target/surefire-reports/*.xml'
+                }
+                success {
+                    echo "Testler başarıyla tamamlandı!"
+                }
+                unstable {
+                    echo "Testler tamamlandı fakat hatalar mevcut!"
                 }
             }
         }
 
         stage('Allure Rapor Oluştur') {
             steps {
-                withMaven(maven: 'Maven') {
-                    sh 'mvn allure:report'
+                script {
+                    try {
+                        allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                            reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'target/allure-results']]
+                        ])
+                    } catch (Exception e) {
+                        echo "Allure raporu oluşturulamadı: ${e.message}"
+                        unstable(message: "Allure raporu oluşturulamadı")
+                    }
                 }
             }
         }
@@ -65,21 +127,36 @@ pipeline {
 
     post {
         always {
-            allure includeProperties: false, 
-                  jdk: '', 
-                  results: [[path: 'target/allure-results']]
+            script {
+                // Temizlik işlemleri
+                try {
+                    if (params.USE_GRID) {
+                        echo "Selenium Grid kapatılıyor..."
+                        sh """
+                            if [ -f "stop-grid.sh" ]; then
+                                chmod +x stop-grid.sh
+                                ./stop-grid.sh
+                            elif [ -f "stop-grid.bat" ]; then
+                                stop-grid.bat
+                            fi
+                        """
+                    }
+                } catch (Exception e) {
+                    echo "Grid kapatma sırasında hata: ${e.message}"
+                }
+
+                // Çalışma alanını temizle
+                cleanWs()
+            }
         }
-        
         success {
-            echo 'Tüm testler başarıyla tamamlandı!'
+            echo "Pipeline başarıyla tamamlandı!"
         }
-        
+        unstable {
+            echo "Pipeline tamamlandı fakat sorunlar var!"
+        }
         failure {
-            echo 'Test koşumu sırasında hatalar oluştu!'
-        }
-        
-        cleanup {
-            cleanWs()
+            echo "Pipeline başarısız oldu!"
         }
     }
 }
