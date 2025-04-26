@@ -16,43 +16,43 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class ConfigManager {
-    private static final String TEST_CONFIG_FILE = Paths.get("src/test/resources/cucumber.properties").toString();
+    private static final String TEST_CONFIG_FILE = Paths.get("src/test/resources/application.properties").toString();
     private static final Logger LOGGER = LogManager.getLogger(ConfigManager.class);
     private static Map<String, String> configMap = new HashMap<>();
     private static Properties properties = new Properties();
 
     private ConfigManager() {
     }
-    public static synchronized String getConfigProperty(String key) {
+
+    public static synchronized String getProperty(String key) {
         if (configMap.isEmpty()) {
-            Properties properties = new Properties();
             try {
-                properties.load(Files.newInputStream(Paths.get(TEST_CONFIG_FILE)));
-                configMap = new HashMap<>(properties.entrySet()
-                    .stream()
-                    .collect(Collectors.toMap(e -> e.getKey().toString(),
-                        e -> e.getValue().toString())));
-                LOGGER.debug("Loaded config properties : " + TEST_CONFIG_FILE);
-            } catch (Exception e) {
-                LOGGER.error(e);
+                // Application properties
+                if (Files.exists(Paths.get(TEST_CONFIG_FILE))) {
+                    Properties appProperties = new Properties();
+                    appProperties.load(Files.newInputStream(Paths.get(TEST_CONFIG_FILE)));
+                    configMap.putAll(appProperties.entrySet()
+                            .stream()
+                            .collect(Collectors.toMap(e -> e.getKey().toString(),
+                                    e -> e.getValue().toString())));
+                    LOGGER.info("Loaded application properties from: " + TEST_CONFIG_FILE);
+                }
+
+                // Configuration properties (eskiden kullanılan)
+                if (Files.exists(Paths.get("application.properties"))) {
+                    Properties configProperties = new Properties();
+                    configProperties.load(new FileInputStream("application.properties"));
+                    configMap.putAll(configProperties.entrySet()
+                            .stream()
+                            .collect(Collectors.toMap(e -> e.getKey().toString(),
+                                    e -> e.getValue().toString())));
+                    LOGGER.info("Loaded configuration properties");
+                }
+            } catch (IOException e) {
+                LOGGER.error("Property yüklenirken hata oluştu", e);
                 throw new RuntimeException(e);
             }
         }
-        return configMap.get(key);
-    }
-
-    static {
-        try{
-            FileInputStream file = new FileInputStream("configuration.properties");
-            properties.load(file);
-            file.close();
-        } catch (IOException e) {
-            System.out.println("File not found");
-            e.printStackTrace();
-        }
-    }
-
-    public static String getProperty(String keyword){
-        return properties.getProperty(keyword);
+        return configMap.getOrDefault(key, null);
     }
 }

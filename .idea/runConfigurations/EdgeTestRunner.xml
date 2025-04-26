@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="EdgeTestRunner" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
-    <module name="com.sahibinden.auto" />
+    <module name="com.sahibinden.auto.spring.new" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="runnerClass.*" />

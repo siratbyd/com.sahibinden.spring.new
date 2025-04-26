@@ -1,25 +1,42 @@
 package base;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import org.junit.jupiter.api.*;
+import annotations.LazyAutowired;
+import annotations.LazyComponent;
+import annotations.SeleniumTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import utils.DriverManager;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)  // @BeforeAll ve @AfterAll metodlarının non-static olabilmesi için
+
+
+
+@SeleniumTest
+@Getter
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // @BeforeAll ve @AfterAll non-static olsun
 public class TestBase {
 
-    private String browser;
-    private WebDriver driver;
+    @LazyAutowired
+    protected DriverManager driverManager;
 
-    @Before
+    protected WebDriver driver;
+
+    @BeforeEach
     public void setup() {
-        browser = System.getProperty("browser"); // Varsayılan chrome
-        driver = DriverManager.getDriver(browser);
+        String browser = System.getProperty("browser", "chrome"); // VM Option'dan alıyoruz, yoksa chrome
+        driver = driverManager.getDriver(browser);
+        System.out.println("Driver açıldı, browser: " + browser);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
-        DriverManager.quitDriver(); // Her test sonunda kapatılır
+        if (driver != null) {
+            driverManager.quitDriver();
+            System.out.println("Driver kapatıldı.");
         }
     }
+}

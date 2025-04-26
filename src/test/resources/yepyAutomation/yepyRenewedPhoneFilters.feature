@@ -32,7 +32,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
     * Wait 1 seconds
     * Write "12000" to "EN_DUSUK_FIYAT_TEXT_BOX" input field
     * Click "SEARCH_BUTTON"
-   # * Wait 1 seconds
+    * Wait 1 seconds
     * Click "SORTING_ARROW_BUTTON"
     * Click "FIYAT_DUSUKTEN_YUKSEGE_BUTTON"
     * Assert that number of "FIRST_ITEM_PRICE" element is greater than or equal "12000"
@@ -50,7 +50,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
     * Wait 1 seconds
     * Write "12000" to "EN_YUKSEK_FIYAT_TEXT_BOX" input field
     * Click "SEARCH_BUTTON"
-   # * Wait 1 seconds
+    * Wait 1 seconds
     * Click "SORTING_ARROW_BUTTON"
     * Click "FIYAT_YUKSEKTEN_DUSUGE_BUTTON"
     * Wait 3 seconds

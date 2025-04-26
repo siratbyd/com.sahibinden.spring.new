@@ -1,8 +1,9 @@
 package runnerClass;
 
-
+import annotations.SeleniumTest;
 import org.junit.platform.suite.api.*;
 
+@SeleniumTest
 @Suite
 @IncludeEngines("cucumber")
 @SelectDirectories("src/test/resources")
@@ -11,9 +12,7 @@ import org.junit.platform.suite.api.*;
         key = "cucumber.plugin",
         value = "pretty, html:target/edge-report.html, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
 )
-@ConfigurationParameter(key = "allure.results.directory", value = "target/allure-results-edge")
-@ConfigurationParameter(key = "cucumber.filter.tags", value = "@TEST")
-
+@ConfigurationParameter(key = "allure.results.directory", value = "target/allure-results/edge")
 public class EdgeTestRunner {
 
     static {

@@ -1,8 +1,10 @@
 package runnerClass;
 
-
+import annotations.SeleniumTest;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.platform.suite.api.*;
 
+@SeleniumTest
 @Suite
 @IncludeEngines("cucumber")
 @SelectDirectories("src/test/resources")
@@ -11,15 +13,14 @@ import org.junit.platform.suite.api.*;
         key = "cucumber.plugin",
         value = "pretty, html:target/firefox-report.html, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
 )
-@ConfigurationParameter(key = "allure.results.directory", value = "target/allure-results-firefox")
-@ConfigurationParameter(key = "cucumber.filter.tags", value = "@TEST")
+@ConfigurationParameter(key = "allure.results.directory", value = "target/allure-results/firefox")
 
 public class FirefoxTestRunner {
 
-    static {
-        if (System.getProperty("browser") == null) {
-            System.setProperty("browser", "firefox");
-        }
+    @BeforeAll
+    public static void setupBrowser() {
+        System.setProperty("browser", "firefox");
+        System.out.println("Firefox test runner başlatıldı, browser: firefox");
     }
 }
 

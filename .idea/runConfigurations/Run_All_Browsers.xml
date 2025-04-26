@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run All Browsers" type="CompoundRunConfigurationType">
+    <toRun name="ChromeTestRunner" type="JUnit" />
+    <toRun name="EdgeTestRunner" type="JUnit" />
+    <toRun name="FirefoxTestRunner" type="JUnit" />
+    <method v="2" />
+  </configuration>
+</component>
