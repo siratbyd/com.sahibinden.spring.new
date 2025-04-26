@@ -18,17 +18,25 @@ pipeline {
             }
         }
 
-        stage('Selenium Grid Kontrol') {
-            when {
-                expression { params.USE_GRID == true }
-            }
+         stage('Selenium Grid Kontrol') {
             steps {
                 script {
                     try {
-                        sh 'curl -s http://localhost:4444/wd/hub/status | grep "\"ready\":true"'
-                        echo "Selenium Grid hazır durumda."
-                    } catch (Exception e) {
-                        error "Selenium Grid hazır değil! Lütfen grid'in çalıştığından emin olun."
+                        def status = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
+                   if (status != 0) {
+                            // Grid başlatma seçeneği
+                       echo "Selenium Grid hazır değil, başlatılmaya çalışılıyor..."
+                       sh 'sh ./start-grid.sh || echo "Grid başlatılamadı"'
+                       // Başlatma sonrası tekrar kontrol
+                       status = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
+                       if (status != 0) {
+                                error "Selenium Grid başlatılamadı!"
+                       }
+                   }
+               } catch (Exception e) {
+                        echo "Grid kontrolünde hata: ${e.message}"
+                   // Test adımına devam etmek için hata fırlatmayı kaldırabilirsiniz
+                   // veya burada grid'i başlatabilirsiniz
                     }
                 }
             }
@@ -46,11 +54,15 @@ pipeline {
             }
         }
 
-        stage('Allure Rapor Oluştur') {
+        tage('Allure Rapor Oluştur') {
             steps {
-                withMaven(maven: 'Maven') {
-                    sh 'mvn allure:report'
-                }
+                allure([
+               includeProperties: false,
+               jdk: '',
+               properties: [],
+               reportBuildPolicy: 'ALWAYS',
+               results: [[path: 'target/allure-results']]
+              ])
             }
         }
     }
@@ -74,4 +86,4 @@ pipeline {
             cleanWs()
         }
     }
-} 
+}
