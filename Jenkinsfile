@@ -13,7 +13,7 @@ pipeline {
     }
 
     environment {
-        SELENIUM_GRID_URL = 'http://localhost:4444/wd/hub'
+        SELENIUM_GRID_URL = 'http://selenium-hub:4444/wd/hub'
     }
 
     stages {
@@ -39,35 +39,44 @@ pipeline {
             steps {
                 script {
                     try {
-                        def gridStatus = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
-                        if (gridStatus != 0) {
-                            echo "Selenium Grid hazır değil, başlatılmaya çalışılıyor..."
-                            // Grid başlatma
-                            sh """
-                                if [ -f "start-grid.sh" ]; then
-                                    chmod +x start-grid.sh
-                                    ./start-grid.sh
-                                elif [ -f "start-grid.bat" ]; then
-                                    start-grid.bat
-                                else
-                                    echo "Grid başlatma scriptleri bulunamadı!"
-                                    exit 1
-                                fi
-                            """
+                        // Docker Compose ile çalışan sistemlerde selenium-hub'ı kontrol et
+                        sh "docker ps | grep selenium || true"
 
-                            // Grid hazır olana kadar bekleme
-                            timeout(time: 2, unit: 'MINUTES') {
-                                waitUntil {
-                                    def status = sh(script: 'curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
-                                    return status == 0
-                                }
+                        // Önce selenium-hub hostname ile, sonra localhost ile dene
+                        def hubStatus = sh(script: 'curl -s http://selenium-hub:4444/wd/hub/status | grep "ready":true || curl -s http://localhost:4444/wd/hub/status | grep "ready":true', returnStatus: true)
+
+                        if (hubStatus != 0) {
+                            echo "Selenium Grid durumu kontrol edilemiyor veya hazır değil."
+
+                            // Grid'i başlatmayı dene (opsiyonel)
+                            try {
+                                sh """
+                                    if [ -f "start-grid.sh" ]; then
+                                        chmod +x start-grid.sh
+                                        ./start-grid.sh
+                                    fi
+                                """
+                                echo "Grid başlatma komutu çalıştırıldı"
+                            } catch (Exception e) {
+                                echo "Grid başlatma denemesi başarısız: ${e.message}"
                             }
-                        }
 
-                        echo "Selenium Grid hazır!"
+                            // Docker durumunu göster
+                            sh "docker ps | grep selenium || true"
+
+                            // Testlere devam et, grid zaten çalışıyor olabilir
+                            echo "Selenium Grid bağlantısı sorunlu ancak testler çalıştırılmaya devam edilecek."
+                            echo "Grid bağlantı adresi: ${env.SELENIUM_GRID_URL}"
+                        } else {
+                            echo "Selenium Grid hazır!"
+                        }
                     } catch (Exception e) {
                         echo "Selenium Grid kontrolünde hata: ${e.message}"
-                        error "Selenium Grid hazır değil! Lütfen grid'in çalıştığından emin olun."
+                        echo "Docker konteynerları kontrol ediliyor..."
+                        sh "docker ps | grep selenium || true"
+
+                        // Hata olabilir ama pipeline'ı durdurmayalım
+                        echo "Selenium Grid erişimi sorunu olabilir, ancak testler çalıştırılmaya devam edilecek."
                     }
                 }
             }
@@ -77,11 +86,15 @@ pipeline {
             steps {
                 script {
                     try {
-                        // Surefire plugin sorunu için düzeltilmiş komut
+                        // Selenium Grid URL'ini belirle
+                        def gridUrl = env.SELENIUM_GRID_URL
+
+                        // Düzeltilmiş Maven komutu
                         sh """
                             mvn clean test \
                             -P${params.BROWSER_PROFILE} \
                             -Duse_grid=${params.USE_GRID} \
+                            -Dselenium.grid.url=${gridUrl} \
                             -Dcucumber.filter.tags="${params.CUCUMBER_TAGS}" \
                             -Dallure.results.directory=target/allure-results \
                             -Dsurefire.useFile=true
@@ -94,11 +107,16 @@ pipeline {
             }
             post {
                 always {
-                    // Test sonuçları
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/**/*.xml'
 
                     // Allure dizini yoksa oluştur
                     sh 'mkdir -p target/allure-results || true'
+                }
+                success {
+                    echo "Testler başarıyla tamamlandı!"
+                }
+                unstable {
+                    echo "Testler tamamlandı fakat hatalar mevcut!"
                 }
             }
         }
