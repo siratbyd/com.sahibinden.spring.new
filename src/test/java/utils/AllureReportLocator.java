@@ -15,12 +15,12 @@ public class AllureReportLocator {
     public static void main(String[] args) {
         System.out.println("Allure rapor dosyalarını arama işlemi başlatılıyor...");
 
-        // Target dizinini tara
+
         File targetDir = new File("target");
         if (targetDir.exists() && targetDir.isDirectory()) {
             System.out.println("'target' dizini bulundu.");
 
-            // Tüm allure sonuçlarını topla
+
             List<String> allureResultPaths = new ArrayList<>();
             findAllureResults(targetDir, allureResultPaths);
 
@@ -31,7 +31,7 @@ public class AllureReportLocator {
                 for (String path : allureResultPaths) {
                     System.out.println("- " + path);
 
-                    // Dizindeki dosya sayısını göster
+
                     File resultDir = new File(path);
                     File[] files = resultDir.listFiles();
                     if (files != null) {
@@ -62,16 +62,16 @@ public class AllureReportLocator {
             return;
         }
 
-        // Bu dizin bir allure-results dizini mi?
+
         if (dir.getName().contains("allure") || dir.getName().contains("Allure")) {
-            // İçerisinde allure içerik var mı kontrol et
+
             File[] files = dir.listFiles();
             if (files != null && files.length > 0) {
                 for (File file : files) {
                     if (file.getName().endsWith(".json") ||
                             file.getName().endsWith(".xml") ||
                             file.getName().endsWith(".attach")) {
-                        // Allure içeriği bulundu
+
                         resultPaths.add(dir.getAbsolutePath());
                         break;
                     }
@@ -79,7 +79,7 @@ public class AllureReportLocator {
             }
         }
 
-        // Alt dizinlere bak
+
         File[] subDirs = dir.listFiles(File::isDirectory);
         if (subDirs != null) {
             for (File subDir : subDirs) {

@@ -128,7 +128,7 @@ public class AutomationMethods {
     public java.util.List<WebElement> findElements(String key) throws Exception {
         By locator = elementManager.getLocatorFromJson(key);
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator)); // Önce elementlerin DOM'da var olduğundan emin oluyoruz
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator)); // önce elementlerin DOM'da var olduğundan emin oluyoruz
         return getDriver().findElements(locator);
     }
 

@@ -173,7 +173,7 @@ public class GeneralSteps {
         int count = Math.min(10, priceElements.size()); // Ürün 10'dan azsa hata vermesin
 
         for (int i = 0; i < count; i++) {
-            String priceText = priceElements.get(i).getText().replaceAll("[^0-9]", ""); // Sadece rakamları alıyoruz
+            String priceText = priceElements.get(i).getText().replaceAll("[^0-9]", ""); // sadece rakamları alıyoruz
             if (!priceText.isEmpty()) {
                 prices.add(Integer.parseInt(priceText));
             }
@@ -251,11 +251,11 @@ public class GeneralSteps {
         WebElement element = automationMethods.findElement(elementKey);
         String elementText = element.getText();
 
-        // Temizleme: Küçük harfe çevir, virgül ve tire kaldır
+        // virgül vs kaldırmak için
         storedText = storedText.toLowerCase().replace(",", "").replace("-", "").trim();
         elementText = elementText.toLowerCase().replace(",", "").replace("-", "").trim();
 
-        // Split kelimelere
+        // split kelimelere
         String[] storedWords = storedText.split("\\s+"); // boşluklara göre ayır
 
         for (String word : storedWords) {
