@@ -13,6 +13,8 @@ import utils.ElementManager;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @LazyComponent
@@ -25,6 +27,9 @@ public class AutomationMethods {
 
     @Autowired
     private ElementManager elementManager;
+
+    private static final Map<String, String> memoryStorage = new HashMap<>();
+
 
     private WebDriver getDriver() {
         if (driver == null) {
@@ -105,4 +110,25 @@ public class AutomationMethods {
         element.sendKeys(text);
         System.out.println("Text sent to element [" + key + "]: " + text);
     }
+    public java.util.List<WebElement> findElements(String key) throws Exception {
+        By locator = elementManager.getLocatorFromJson(key);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator)); // Önce elementlerin DOM'da var olduğundan emin oluyoruz
+        return getDriver().findElements(locator);
+    }
+
+    public void storeElementText(String key, String elementText) {
+        memoryStorage.put(key, elementText);
+        System.out.println("Stored text with key [" + key + "]: " + elementText);
+    }
+
+
+    /**
+     * Daha sonra saklanan text'i bu methodla çağırabilirsin.
+     */
+    public String getStoredText(String key) {
+        return memoryStorage.get(key);
+    }
+
+
 }

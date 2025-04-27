@@ -56,7 +56,7 @@
         "element_type": "xpath"
     },
     "AVAILABLE_PHONE_NUMBER_ON_FILTER": {
-        "element_value": "//span[normalize-space()='(196)']",
+        "element_value": "//span[@class='sui-global-surface-body-tiny']",
         "element_type": "xpath"
     },
     "AVAILABLE_PHONE_NUMBER_ON_HEADER": {
@@ -83,8 +83,45 @@
         "element_value": "//a[@title='Fiyat: Yüksekten düşüğe']",
         "element_type": "xpath"
     },
+    "FIRST_ITEM_FIYAT": {
+        "element_value": "(//div[contains(@class, 'classified-price-container')])[1]/span",
+        "element_type": "xpath"
+    },
+    "PRODUCT_FIYAT_LIST": {
+        "element_value": "div.refurbishment-classified-price-container span",
+        "element_type": "css"
+    },
+    "FIRST_PRODUCT_MODEL_ISMI_LIST_PAGE": {
+        "element_value": "//div[contains(@class, 'searchResultsTagAttributeValue')]",
+        "element_type": "xpath"
+    },
+    "FIRST_PRODUCT_RENK_AND_HAFIZA_LIST_PAGE": {
+        "element_value": "//a[contains(@class, 'classifiedTitle')]",
+        "element_type": "xpath"
+    },
+    "FIRST_PRODUCT_FIYAT_LIST_PAGE": {
+        "element_value": "//div[contains(@class, 'searchResultsPriceValue')]//span",
+        "element_type": "xpath"
+    },
+    "FIRST_PRODUCT_FIYAT_DETAIL_PAGE": {
+        "element_value": "//div[contains(@class, 'refurb-section-infos-price')]",
+        "element_type": "xpath"
+    },
+    "FIRST_PRODUCT_RENK_MODELISMI_HAFIZA_DETAIL_PAGE": {
+        "element_value": "//h1[@class='sui-global-surface-page-title refurb-section-infos-title sui-color-emphasis-high ']",
+        "element_type": "xpath"
+    },
+    "FIRST_PRODUCT_CLICK": {
+        "element_value": "//img[@title and contains(@alt, '-')]/parent::a",
+        "element_type": "xpath"
+    },
     "FIRST_ITEM_PRICE": {
         "element_value": "(//div[contains(@class, 'classified-price-container')])[1]/span",
         "element_type": "xpath"
+    },
+    "PRODUCT_PRICE_LIST": {
+        "element_value": "div.refurbishment-classified-price-container span",
+        "element_type": "css"
     }
+
 }

@@ -31,7 +31,7 @@ public class DriverManager {
 
     public static WebDriver getDriver(String browserType) {
         long threadId = Thread.currentThread().getId();
-        
+
         if (browserType == null || browserType.isEmpty()) {
             browserType = "chrome";
             System.out.println("'browser' null geldi, default olarak 'chrome' seçildi.");
@@ -53,7 +53,7 @@ public class DriverManager {
 
     private static WebDriver createDriver(String browserType) throws MalformedURLException {
         WebDriver driver;
-        
+
         switch (browserType.toLowerCase(Locale.ROOT)) {
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
@@ -136,7 +136,7 @@ public class DriverManager {
             System.out.println("Thread ID: " + threadId + " için driver kapatıldı.");
         }
     }
-    
+
     // Tüm driverları temizlemek için
     public static void quitAllDrivers() {
         for (WebDriver driver : driverMap.values()) {

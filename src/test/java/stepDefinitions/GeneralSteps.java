@@ -10,6 +10,10 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Value;
 import utils.DriverManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 
 public class GeneralSteps {
 
@@ -138,4 +142,97 @@ public class GeneralSteps {
             System.out.println("Assertion PASSED: " + actualNumber + " <= " + expectedNumber);
         }
     }
+
+    @And("Assert that first 10 product prices are sorted in ascending order")
+    public void assertFirst10ProductPricesSortedAscending() throws Exception {
+        List<WebElement> priceElements = automationMethods.findElements("PRODUCT_PRICE_LIST"); // JSON'dan geliyor
+        List<Integer> prices = new ArrayList<>();
+
+        int count = Math.min(10, priceElements.size()); // Ürün 10'dan azsa hata vermesin
+
+        for (int i = 0; i < count; i++) {
+            String priceText = priceElements.get(i).getText().replaceAll("[^0-9]", ""); // Sadece rakamları alıyoruz
+            if (!priceText.isEmpty()) {
+                prices.add(Integer.parseInt(priceText));
+            }
+        }
+
+        if (prices.isEmpty()) {
+            throw new Exception("Fiyat listesi boş geldi!");
+        }
+
+        List<Integer> sortedPrices = new ArrayList<>(prices);
+        Collections.sort(sortedPrices);
+
+        if (!prices.equals(sortedPrices)) {
+            throw new AssertionError("İlk " + count + " ürün fiyatı düşükten yükseğe sıralı değil!\nGerçek sıra: " + prices + "\nBeklenen sıra: " + sortedPrices);
+        } else {
+            System.out.println("Assertion PASSED: İlk " + count + " ürün fiyatı düşükten yükseğe sıralı.");
+        }
+    }
+
+    @And("Assert that first 10 product prices are sorted in descending order")
+    public void assertFirst10ProductPricesSortedDescending() throws Exception {
+        List<WebElement> priceElements = automationMethods.findElements("PRODUCT_PRICE_LIST");
+        List<Integer> prices = new ArrayList<>();
+
+        int count = Math.min(10, priceElements.size());
+
+        for (int i = 0; i < count; i++) {
+            String priceText = priceElements.get(i).getText().replaceAll("[^0-9]", "");
+            if (!priceText.isEmpty()) {
+                prices.add(Integer.parseInt(priceText));
+            }
+        }
+
+        if (prices.isEmpty()) {
+            throw new Exception("Fiyat listesi boş geldi!");
+        }
+
+        List<Integer> sortedPrices = new ArrayList<>(prices);
+        sortedPrices.sort(Collections.reverseOrder());
+
+        if (!prices.equals(sortedPrices)) {
+            throw new AssertionError("İlk " + count + " ürün fiyatı yüksekten düşüğe sıralı değil!\nGerçek sıra: " + prices + "\nBeklenen sıra: " + sortedPrices);
+        } else {
+            System.out.println("Assertion PASSED: İlk " + count + " ürün fiyatı yüksekten düşüğe sıralı.");
+        }
+    }
+    @And("Save the texts from {string} element")
+    public void saveTheTextsFromElement(String elementKey) throws Exception {
+        WebElement element = automationMethods.findElement(elementKey);
+        String elementText = element.getText().trim();
+
+        if (elementText.isEmpty()) {
+            throw new Exception("Elementten alınan text boş: " + elementKey);
+        }
+
+        // Şu şekilde düzeltilmiş satır:
+        automationMethods.storeElementText(elementKey, elementText);
+    }
+
+    @And("Assert that stored text from {string} is contained in {string} element")
+    public void assertThatStoredTextIsContainedAfterCleaningAndSplitting(String storedKey, String elementKey) throws Exception {
+        String storedText = automationMethods.getStoredText(storedKey);
+        WebElement element = automationMethods.findElement(elementKey);
+        String elementText = element.getText();
+
+        // Temizleme: Küçük harfe çevir, virgül ve tire kaldır
+        storedText = storedText.toLowerCase().replace(",", "").replace("-", "").trim();
+        elementText = elementText.toLowerCase().replace(",", "").replace("-", "").trim();
+
+        // Split kelimelere
+        String[] storedWords = storedText.split("\\s+"); // boşluklara göre ayır
+
+        for (String word : storedWords) {
+            if (!elementText.contains(word)) {
+                throw new AssertionError("Beklenen kelime bulunamadı!\nAranan kelime: " + word + "\nElement Text: " + elementText);
+            }
+        }
+        System.out.println("✅ Assertion Passed: Tüm kelimeler bulundu.");
+    }
+
+
+
+
 }

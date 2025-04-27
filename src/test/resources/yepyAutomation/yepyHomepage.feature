@@ -1,7 +1,7 @@
 Feature: Sahibinden Yepy homepage
 
 
-    @YEPY_HOMEPAGE @TESTt
+    @YEPY_HOMEPAGE @TEST
     Scenario: Sahibinden Yepy Onboarding Page Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"
@@ -12,7 +12,7 @@ Feature: Sahibinden Yepy homepage
         * Assert that "KENDI_TELEFONUNU_SAT_BUTON" element is visible
 
     @YEPY_HOMEPAGE @TEST
-    Scenario: Sahibinden Yepy "Yenilenmiş Telefon Al" Landing Page UI Control
+    Scenario: "Yenilenmiş Telefon Al" Landing Page UI Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"
         * Click "YEPY_BUTTON"

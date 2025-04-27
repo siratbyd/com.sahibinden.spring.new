@@ -19,7 +19,7 @@ public class TestRunner {
         if (System.getProperty("browser") == null) {
             System.setProperty("browser", "chrome");
         }
-        
+
         // Allure sonuçları için dizin belirt
         if (System.getProperty("allure.results.directory") == null) {
             System.setProperty("allure.results.directory", "target/allure-results");
