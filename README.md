@@ -180,7 +180,7 @@ Runner Configurationları
 
 ```
 
-a)Normal Test Koşumu
+### a)Normal Test Koşumu
 
 Öncelikle feature dosyalarımızdaki her bir senaryomuza eklemiş olduğumuz cucumber filter tag'lerinden hangisini barındıran testleri koşmamız gerektiğiniz junit-platform.properties dosyasında tanımlamamız gerekiyor.
 
@@ -195,6 +195,7 @@ cucumber.filter.tags = @TEST
 
 
 Koşmak istediğimiz cucumber tag
+
 ![image](https://github.com/user-attachments/assets/c92d3c7e-b728-4741-8524-35449b6222f1)
 
 
@@ -206,13 +207,13 @@ ChromeTestRunner
 ![image](https://github.com/user-attachments/assets/86368290-f505-451b-ac47-1f80b1c7af8b)
 
 
-b)Browser Bazlı Paralel Test Koşumu
+### b)Browser Bazlı Paralel Test Koşumu
 
 Kullanıcı aynı adımları takip ederek sağ üstteki dropdown menüsü üzerinden "Run All Browsers" seçeneği ile testi başlatırsa her 3 browserda da test koşumu başarıyla başlatılmış olunur.
 
 ![image](https://github.com/user-attachments/assets/86368290-f505-451b-ac47-1f80b1c7af8b)
 
-c)Scenario Bazlı Paralel Test Koşumu
+### c)Scenario Bazlı Paralel Test Koşumu
 
 Kullanıcı test süreçlerini hızlandırmak için senaryoları aynı anda birden fazla tarayıcıda test etmek isteyebilir. Öncelikle src/test/resources/application.properties ve src/test/resources/junit-platform.properties içerisinde gerekli konfigürasyonları yapmamız gerek.
 
@@ -239,27 +240,60 @@ Bu iki konfigürasyonu ayarladıktan sonra ister tek browserde ister bütün bro
 
 ### 2. Selenium Grid ile Çalıştırma
 
+Not: Docker kendi locanizde halihazırda kurulu olmalı.(https://www.docker.com/products/docker-desktop/)
+
 Önce Selenium Grid'i başlatın:
 
-```bash
+Selanium Grid'i başlatma, container'ların indirilmesi, kurulumu ve ayağa kaldırma vs. gibi ayarları start-grid.sh dosyası otomatize bir şekilde ayarlıyor.
+
+
+start-grid.sh
+```
 # Linux/macOS için
+# Gerekli pluginler yüklüyse direkt IDE komut satırından çalıştırılabilir.
 ./start-grid.sh
 
 # Windows için
 start-grid.bat
 ```
 
-Testleri Grid üzerinde çalıştırmak için:
+![image](https://github.com/user-attachments/assets/bc7fb29f-dc56-4d31-b2c9-8dcae87a723d)
 
-```bash
-mvn clean test -Dcucumber.filter.tags="@TEST" -Duse_grid=true
+
+Kurulum tamamlandıktan sonra;
+
 ```
+http://localhost:4444/ui
+```
+Linkinden Selenium Grid Hub'ın arayüzüne erişebiliyoruz
+
+![image](https://github.com/user-attachments/assets/e03c82a1-a7b1-4852-ab30-a84deceb3b6d)
+
+
+### Testleri Grid üzerinde çalıştırma
+
+Testlerimizi grid üzerinde çalıştırmak için öncelikle application.properties üzerindeki "use_grid" konfigürasyonunu ayarlamamız gerek.
+
+src/test/resources/application.properties
+```
+# Selenium Grid kullanımı (true/false)
+use_grid=true
+```
+Eğer testi başlatmadan önce burayı "true"'ya çekmezsek containerlar ayakta olmasına ve Selenium Grid aktif olmasına rağmen testlerimiz localimizde çalışır.
+
+Burdan sonraki adımlarda gerek tekli koşum gerek browser tabanlı paralel koşum gerekse senaryo bazlı paralel koşumdaki adımlar local test koşma ile birebir aynı.
+
+![image](https://github.com/user-attachments/assets/c6848d3f-ed9d-4401-af4c-3c87917156a7)
+Testlerinizi başlattığınızda Selenium HUB üzerinde browserların ayağa kalktığını görebilirsiniz.
 
 ### 3. Jenkins ile Entegrasyon
 
+Jenkinsi başlatmak için start-grid.sh'a benzer şekilde start-jenkins-sh'ı çalıştırmamız yeterli olacaktır. Böylelelikle Selenim HUB, browserlar ve Jenkins için gerekti containerlar otomatik olarak pull yapılıp ardından ayağa kalkacaklardı. Jenkins ve Selenium HUB'la ilgili docker configurationları sırasıyla docker-compose.jenkins.yml ve docker-compose.yml dosyaları içerisindedi.r
+
 Jenkins'i başlatmak için:
 
-```bash
+start-jenkins.sh
+```
 # Linux/macOS için
 ./start-jenkins.sh
 
@@ -269,25 +303,35 @@ start-jenkins.bat
 
 Jenkins arayüzünden pipeline'ı çalıştırarak parametrelerini yapılandırabilirsiniz.
 
-### 4. Paralel Test Çalıştırma
-
-Testleri paralel olarak çalıştırmak için:
-
-```bash
-# Linux/macOS için
-./run-parallel-tests.sh
-
-# Windows için
-run-parallel-tests.bat
-```
+Not: Dependency uyumsuzlukları ve version problemlerinden dolayı projenin şuanki güncel halinde Jenkins piple kurulumu %100 verimle çalışmayabiliyor.
 
 ## Raporlama
 
-Testlerin sonuçları Allure Reports ile görselleştirilmektedir. Test çalıştırması tamamlandıktan sonra, raporları açmak için:
+Testlerin sonuçları Allure Reports ve Cucumber'ın kendi raporlama sistemi ile görselleştirilmektedir. Test çalıştırması tamamlandıktan sonra, raporları açmak için:
 
-```bash
+Eğer paralel olmayan bir test koşumu yapıldıysa Allure tercih edilebilir ve raporu almak için;
+
+```
+allure serve
+```
+yazmak yeterlidir.
+
+![image](https://github.com/user-attachments/assets/24a1bbb1-06cc-437e-81b2-19cec5cf0084)
+
+
+Eğer browser bazlı paralel bir koşum gerçekleştirildiyse Cucumber raporlaması tercih edilmelidir.
+
+```
 ./Open-reports.sh
 ```
+komutu çalıştırılarak raporlara kolaylıkla erişim sağlanabilir. Bu sh dosyası istenen tek bir tarayıcının veya aynı anda üç tarayıcının da raporlarına seçenek ile erişilebilir.
+
+![image](https://github.com/user-attachments/assets/c750256c-781f-44c0-9a6c-d67d69895c46)
+
+![image](https://github.com/user-attachments/assets/151559cc-9be2-4344-b57c-c653abb5d150)
+
+
+
 
 ## Proje Özelleştirme
 
@@ -300,8 +344,10 @@ Testlerin sonuçları Allure Reports ile görselleştirilmektedir. Test çalış
 3. **Konfigürasyon Değiştirme**  
    `application.properties` dosyasında test ortamı yapılandırmasını değiştirebilirsiniz.
 
-## İpuçları
+4. **Locator Ekleme**  
+   `src/test/java/objectRepository` dosyasında locaterlarınızı sınıflandırarak kolaylıkla ekleyebilir ve testlerinizde kullanabilirsiniz.
 
-- Tarayıcı tercihlerini komut satırı parametresi olarak geçebilirsiniz: `-Dbrowser=firefox`
-- Jenkins üzerinden belirli tag'leri çalıştırabilirsiniz: `-Dcucumber.filter.tags="@smoke or @regression"`
-- Paralellik seviyesini junit-platform.properties dosyasında ayarlayabilirsiniz 
+## Projenin Gelişime Açık yönleri
+
+- Dependency ve version sorunları çözülerek çok daha sağlıklı bir Jenkin kurulumu yapılarak pipelineler hazırlanarak CI/CD süreçleri dahil edilebilir.
+- Hazır ve ücretsiz raporlama sistemleri yerine ücretli ama verimli veya özelleştirilmiş raporlar kullanılabilir.
