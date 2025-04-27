@@ -11,7 +11,7 @@
     <option name="MAIN_CLASS_NAME" value="runnerClass.FirefoxTestRunner" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
-    <option name="VM_PARAMETERS" value="-Dbrowser=firefox" />
+    <option name="VM_PARAMETERS" value="-Dbrowser=firefox -Dmax.parallel.browsers=3" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

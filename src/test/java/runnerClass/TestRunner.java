@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectDirectories("src/test/resources")  // Feature dosyalarının dizini
+@SelectDirectories("src/test/resources/yepyAutomation")  // Feature dosyalarının dizini
 @ConfigurationParameter(key = "cucumber.glue", value = "stepDefinitions,base,utils")
 @ConfigurationParameter(key = "cucumber.plugin", value = "pretty, html:target/cucumber-report.html, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm")
 @ConfigurationParameter(key = "cucumber.execution.parallel.enabled", value = "true")

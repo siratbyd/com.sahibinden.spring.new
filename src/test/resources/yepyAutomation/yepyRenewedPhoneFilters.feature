@@ -9,6 +9,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
     * Switch new window
     * Click "YENILENMIS_TELEFON_AL_BUTON"
 
+
   @YEPY_FILTERS @TEST
   Scenario: Filter Phone Number and Actual Phone Number Control
     * Wait 3 seconds
@@ -63,6 +64,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
     * Click "FIYAT_YUKSEKTEN_DUSUGE_BUTTON"
     * Wait 3 seconds
     * Assert that first 10 product prices are sorted in descending order
+
 
   @YEPY_FILTERS @TEST
   Scenario: Comparing Lısted Product and Product Detail Infos

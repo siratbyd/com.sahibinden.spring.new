@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 public class DataManager {
 
 
+    // testler boyunca herhangi bir data kullanılmadı. Kullanıcı ismi, şifre, token vs
+
     private static Object document;
 
     private DataManager() {
@@ -30,3 +32,5 @@ public class DataManager {
     }
 
 }
+
+

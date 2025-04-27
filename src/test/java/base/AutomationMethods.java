@@ -16,6 +16,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 @LazyComponent
 public class AutomationMethods {
@@ -29,6 +32,7 @@ public class AutomationMethods {
     private ElementManager elementManager;
 
     private static final Map<String, String> memoryStorage = new HashMap<>();
+
 
 
     private WebDriver getDriver() {
@@ -81,7 +85,7 @@ public class AutomationMethods {
         if (!actualText.contains(expectedText)) {
             throw new AssertionError("Expected text error!\nExpected: " + expectedText + "\nActual: " + actualText);
         }
-        System.out.println("✅ Success: " + expectedText);
+        System.out.println("Success: " + expectedText);
     }
 
     public void assertElementIsClickable(String key) throws Exception {
@@ -89,7 +93,7 @@ public class AutomationMethods {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         try {
             wait.until(ExpectedConditions.elementToBeClickable(locator));
-            System.out.println("✅ Element is clickable: " + key);
+            System.out.println("Element is clickable: " + key);
         } catch (TimeoutException e) {
             throw new AssertionError("Element is not clickable: " + key);
         }
@@ -124,11 +128,9 @@ public class AutomationMethods {
 
 
     /**
-     * Daha sonra saklanan text'i bu methodla çağırabilirsin.
+     * Daha sonra saklanan text'i bu methodla çağırayoruz, case'ler için lazım
      */
     public String getStoredText(String key) {
         return memoryStorage.get(key);
     }
-
-
-}
+    }

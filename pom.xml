@@ -46,13 +46,13 @@
             <version>4.31.0</version>
         </dependency>
 
-        <!-- Junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
+<!--        &lt;!&ndash; Junit &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>junit</groupId>-->
+<!--            <artifactId>junit</artifactId>-->
+<!--            <version>4.13.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <!-- Junit Jupiter API -->
         <dependency>
@@ -184,12 +184,12 @@
             <version>2.24.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit4</artifactId>
-            <version>2.24.0</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.qameta.allure</groupId>-->
+<!--            <artifactId>allure-junit4</artifactId>-->
+<!--            <version>2.24.0</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -289,9 +289,11 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
                 <configuration>
-                    <parallel>classes</parallel>  <!-- Sınıf bazlı paralellik -->
-                    <useUnlimitedThreads>true</useUnlimitedThreads>  <!-- Thread sınırı yok -->
+                    <parallel>classes</parallel><!-- Sınıf bazlı paralellik -->
+                    <threadCount>${max.parallel.browsers}</threadCount>
+                    <useUnlimitedThreads>false</useUnlimitedThreads>  <!-- Thread sınırı yok -->
                     <testFailureIgnore>true</testFailureIgnore>
+                    <useModulePath>false</useModulePath>
                     <systemPropertyVariables>
                         <cucumber.publish.quiet>true</cucumber.publish.quiet>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
@@ -301,10 +303,10 @@
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                     <properties>
-                        <property>
-                            <n>listener</n>
-                            <value>io.qameta.allure.junit5.AllureJunit5</value>
-                        </property>
+                        <configurationParameters>
+                            junit.jupiter.extensions.autodetection.enabled=true
+                        </configurationParameters>
+<!--                        <listener>io.qameta.allure.junit5.AllureJunit5</listener>-->
                     </properties>
                 </configuration>
                 <dependencies>

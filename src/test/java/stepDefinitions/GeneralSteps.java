@@ -207,7 +207,6 @@ public class GeneralSteps {
             throw new Exception("Elementten alınan text boş: " + elementKey);
         }
 
-        // Şu şekilde düzeltilmiş satır:
         automationMethods.storeElementText(elementKey, elementText);
     }
 
@@ -229,7 +228,7 @@ public class GeneralSteps {
                 throw new AssertionError("Beklenen kelime bulunamadı!\nAranan kelime: " + word + "\nElement Text: " + elementText);
             }
         }
-        System.out.println("✅ Assertion Passed: Tüm kelimeler bulundu.");
+        System.out.println("Assertion Passed: Tüm kelimeler bulundu.");
     }
 
 

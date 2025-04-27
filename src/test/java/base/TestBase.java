@@ -3,9 +3,7 @@ package base;
 import annotations.LazyAutowired;
 import annotations.LazyComponent;
 import annotations.SeleniumTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +37,5 @@ public class TestBase {
             System.out.println("Driver kapatıldı.");
         }
     }
+
 }

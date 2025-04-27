@@ -38,7 +38,7 @@ public class ConfigManager {
                     LOGGER.info("Loaded application properties from: " + TEST_CONFIG_FILE);
                 }
 
-                // Configuration properties (eskiden kullanılan)
+
                 if (Files.exists(Paths.get("application.properties"))) {
                     Properties configProperties = new Properties();
                     configProperties.load(new FileInputStream("application.properties"));

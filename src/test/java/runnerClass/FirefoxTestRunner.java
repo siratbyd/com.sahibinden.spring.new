@@ -7,13 +7,15 @@ import org.junit.platform.suite.api.*;
 @SeleniumTest
 @Suite
 @IncludeEngines("cucumber")
-@SelectDirectories("src/test/resources")
+//@SelectDirectories("src/test/resources/yepyAutomation")
+@SelectClasspathResource("yepyAutomation")
 @ConfigurationParameter(key = "cucumber.glue", value = "stepDefinitions")
 @ConfigurationParameter(
         key = "cucumber.plugin",
         value = "pretty, html:target/firefox-report.html, io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
 )
 @ConfigurationParameter(key = "allure.results.directory", value = "target/allure-results/firefox")
+@ConfigurationParameter(key = "cucumber.features", value = "classpath:yepyAutomation")
 
 public class FirefoxTestRunner {
 
