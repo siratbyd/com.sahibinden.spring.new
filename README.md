@@ -1,21 +1,21 @@
-# Sahibinden Test Otomasyon Projesi
+# Sahibinden yepy Web Otomasyon
 
 ## Proje Hakkında
 
-Bu proje, Sahibinden.com platformunun test otomasyonunu gerçekleştirmek için oluşturulmuş bir BDD (Behavior Driven Development) tabanlı test çerçevesidir. Java programlama dili ve çeşitli teknolojiler kullanılarak, özellikle yenilenmiş telefon pazarı (Yepy) gibi platformların test edilmesini sağlar.
+Sahibinden.com'un yenilenmiş cep telefonları sayfası için oluşturduğum web otomasyon projesine dair detaylar aşağıda :)
 
 ## Kullanılan Teknolojiler
 
-- **Java:** Projenin ana programlama dili
+- **Java** 
 - **Selenium:** Web tarayıcı otomasyonu için kullanılmaktadır
 - **Selenium Grid:** Paralel test çalıştırma için dağıtık test altyapısı
 - **Docker:** Konteynerleştirilmiş test ortamları için
-- **Jenkins:** Sürekli entegrasyon ve dağıtım (CI/CD) için
+- **Jenkins** 
 - **Maven:** Bağımlılık yönetimi ve proje yapılandırması
 - **JUnit 5:** Java test çerçevesi
-- **Cucumber:** BDD yaklaşımı ve Gherkin sözdizimi ile test senaryoları oluşturma
+- **Cucumber:** BDD yaklaşımı ve rahat okunabilir testler
 - **Spring Boot:** Bağımlılık enjeksiyonu ve test bileşenlerinin yönetimi
-- **Log4j:** Loglama için kullanılmaktadır
+- **Log4j:** Loglama için 
 
 ## Proje Yapısı
 
@@ -65,8 +65,6 @@ Bu proje, Sahibinden.com platformunun test otomasyonunu gerçekleştirmek için 
 ├── start-grid.bat
 ├── start-jenkins.sh
 ├── start-jenkins.bat
-├── run-parallel-tests.sh
-├── run-parallel-tests.bat
 └── Open-reports.sh
 ```
 
@@ -82,16 +80,15 @@ TestApplication.java sınıfı Spring Boot entegrasyonunu sağlayarak, projenin 
 - **Cucumber Entegrasyonu:** Cucumber ile Spring Boot entegrasyonu sağlayarak BDD test adımlarının yönetimi
 - 
 
-### 2. Test Koşucuları (Test Runners)
+### 2. Test Runners
 
-`runnerClass` paketi altında bulunan runner sınıfları, farklı tarayıcılar için test senaryolarını çalıştırmak üzere yapılandırılmıştır:
+`runnerClass` paketi altında bulunan runner sınıfları, farklı tarayıcılar için test senaryolarını çalıştırmak üzere yapılandırdım.
 
-- **TestRunner:** Genel test koşucusu
 - **ChromeTestRunner:** Chrome tarayıcı testleri için
 - **EdgeTestRunner:** Edge tarayıcı testleri için
 - **FirefoxTestRunner:** Firefox tarayıcı testleri için
 
-JUnit 5 ve Cucumber entegrasyonu ile çalışan bu sınıflar, test senaryolarının paralel olarak çalıştırılmasını ve sonuçların Allure raporlarına aktarılmasını sağlar.
+JUnit 5 ve Cucumber entegrasyonu ile çalışan bu sınıflar, test senaryolarının paralel olarak çalıştırılmasını,sonuçların Allure ve Cucumber raporlarına aktarılmasını sağlar.
 
 Not:IntelliJ, @Suite ile işaretlenmiş sınıflara sağ tıklayıp Run dediğinde her defasında yeni bir temporary run config oluşturduğu ve VM configleri içermediği için testlerimizi paralel koşuma uygun olması için sağ üstteki dropdown'dan başlatmamız gerekmekte.İlgili run configurationlar .idea/runConfigurations/ içerisinde
 
@@ -99,7 +96,6 @@ Not:IntelliJ, @Suite ile işaretlenmiş sınıflara sağ tıklayıp Run dediğin
 
 `utils` paketi altındaki DriverManager sınıfı, farklı tarayıcılar için WebDriver örneklerinin yönetimini sağlar. Bu sınıf:
 
-- Thread-safe yapı ile paralel test çalıştırma desteği
 - Local veya Selenium Grid üzerinde tarayıcı başlatma imkanı
 - Chrome, Firefox, Edge, Opera ve IE gibi tarayıcılar için destek sağlar (Projemizde Opera kullanmadım)
 
@@ -110,7 +106,7 @@ Not:IntelliJ, @Suite ile işaretlenmiş sınıflara sağ tıklayıp Run dediğin
 - **TestBase:** Testlerin yaşam döngüsünü (setup/teardown) yöneten temel sınıf
 - **AutomationMethods:** Yaygın otomasyon fonksiyonlarını içeren yardımcı metotları burda topladım
 
-### 5. Test Adımları (Step Definitions)
+### 5. Step Definitions
 
 `stepDefinitions` paketi altındaki sınıflar, Cucumber feature dosyalarındaki adımları gerçek koda dönüştüren metotları içerir:
 
@@ -118,11 +114,11 @@ Not:IntelliJ, @Suite ile işaretlenmiş sınıflara sağ tıklayıp Run dediğin
 - **Hooks:** Test senaryoları öncesinde ve sonrasında çalışacak metodları tanımlar
 - **CucumberSpringConfig:** Cucumber ve Spring entegrasyonunu sağlar
 
-### 6. Özellik Dosyaları (Feature Files)
+### 6. Feature Files (yepyAutomation)
 
-`resources/yepyAutomation` dizini altındaki feature dosyaları, Gherkin sözdizimi ile yazılmış test senaryolarını içerir:
+`resources/yepyAutomation` dizini altındaki feature dosyaları, Gherkin dili ile yazılmış test senaryolarını içerir:
 
-- **yepyHomepage.feature:** Yepy ana sayfa testleri
+- **yepyHomepage.feature:** Yepy ana sayfa ve onboarding testleri
 - **yepyRenewedPhoneFilters.feature:** Yenilenmiş telefon filtreleri testleri
 
 ### 7. Docker ve Selenium Grid Entegrasyonu
@@ -149,7 +145,7 @@ Not: Güncel projenin durumunda dependency uyumsuzlukları ve proje içerisindek
 
 Test koşumlarına başlamadan önce testlerimizi neredeyse her zaman IDE üzerinden çalıştırıyoruz. Test Runner kısmında da bahsettiğim gibi IntelliJ, @Suite ile işaretlenmiş sınıflara sağ tıklayıp Run dediğinde her defasında yeni bir temporary run config oluşturduğu ve VM configleri içermediği için testlerimizi paralel koşuma uygun olması için sağ üstteki dropdown'dan başlatmamız gerekiyor aynı durum mvn clean test gibi komutlar için de geçerli.
 
-İlgili runner configürasyonları aşağıdaki dosyada xml olarak tanımlıdır. Örnek;
+İlgili runner konfigürasyonları aşağıdaki dosyada xml olarak tanımlıdır. Örnek;
 
 
 Runner Configurationları
@@ -206,10 +202,12 @@ ChromeTestRunner
 
 ![image](https://github.com/user-attachments/assets/86368290-f505-451b-ac47-1f80b1c7af8b)
 
+Not: Proje ilk kez ayağa kalktığında ve ilk test koşumunda runnerclass'ın configuration ekranı uyarı olarak açılır, apply diyip teste devam edebilirsiniz, bu sadece tek seferlik olan bir durum.
+
 
 ### b)Browser Bazlı Paralel Test Koşumu
 
-Kullanıcı aynı adımları takip ederek sağ üstteki dropdown menüsü üzerinden "Run All Browsers" seçeneği ile testi başlatırsa her 3 browserda da test koşumu başarıyla başlatılmış olunur.
+Kullanıcı aynı adımları takip ederek sağ üstteki dropdown menüsü üzerinden "Run All Browsers" seçeneği ile testi başlatırsa her 3 browserda da test koşumu başarıyla başlamış olur.
 
 ![image](https://github.com/user-attachments/assets/86368290-f505-451b-ac47-1f80b1c7af8b)
 
@@ -228,14 +226,14 @@ Senaryolarımızı cucumber ile hazırladığumız için senaryo bazında parale
 
 src/test/resources/application.properties
 ```
-#Feature-scenario bazl? paralel test ko?umunda ayn? browser tipinden aç?lacak maksimum pencere say?s? Örn: 3 chrome 3 edge 3 firefox aç?l?r
-# junit-platform.properties dosyas?ndaki cucumber.execution.parallel.enabled = true ?eklinde olmal?
+#Feature-scenario bazlı paralel test koşumunda aynı browser tipinden açılacak maksimum pencere sayısı Örn: 3 chrome 3 edge 3 firefox açılır
+# junit-platform.properties dosyasındaki cucumber.execution.parallel.enabled = true şeklinde olmalı eğer false ise default olarak 1 browser açılır
 max.parallel.browsers=3
 ```
 Kaynak kullanımını optimize etmek için aynı anda aynı browser türünden maksimum kaç tane pencere açılmasını istediğimizi ise burdan yönetiyoruz.
 
 
-Bu iki konfigürasyonu ayarladıktan sonra ister tek browserde ister bütün browserlarda hem senaryo bazlı hem de browser bazlı paralel koşum yapabilriiz.
+Bu iki konfigürasyonu ayarladıktan sonra ister tek browserde ister bütün browserlarda hem senaryo bazlı hem de browser bazlı paralel koşum yapabiliriz.
 
 
 ### 2. Selenium Grid ile Çalıştırma
@@ -279,7 +277,7 @@ src/test/resources/application.properties
 # Selenium Grid kullanımı (true/false)
 use_grid=true
 ```
-Eğer testi başlatmadan önce burayı "true"'ya çekmezsek containerlar ayakta olmasına ve Selenium Grid aktif olmasına rağmen testlerimiz localimizde çalışır.
+Eğer testi başlatmadan önce burayı "true"'ya çekmezsek containerlar ayakta olmasına ve Selenium Grid aktif olmasına rağmen testlerimiz localimizde çalışır. Veya tam tersi eğer true iken containerlar ayakta değilse testlerimiz hata verecektir.
 
 Burdan sonraki adımlarda gerek tekli koşum gerek browser tabanlı paralel koşum gerekse senaryo bazlı paralel koşumdaki adımlar local test koşma ile birebir aynı.
 
@@ -301,15 +299,29 @@ start-jenkins.sh
 start-jenkins.bat
 ```
 
+
+Jenkins arayüzüne erişmek için;
+```
+http://localhost:8080
+```
+
+
+Arayüze ilk kez eriştikten sonra Jenkins size bir şifre soracaktır, bu şifreyi almak için aşağıdaki komutu girmeniz lazım.
+```
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+```
+
+
 Jenkins arayüzünden pipeline'ı çalıştırarak parametrelerini yapılandırabilirsiniz.
 
-Not: Dependency uyumsuzlukları ve version problemlerinden dolayı projenin şuanki güncel halinde Jenkins piple kurulumu %100 verimle çalışmayabiliyor.
+Not: Dependency uyumsuzlukları ve version problemlerinden dolayı projenin şuanki güncel halinde Jenkins pipline kurulumu %100 verimle çalışmayabiliyor.
 
 ## Raporlama
 
-Testlerin sonuçları Allure Reports ve Cucumber'ın kendi raporlama sistemi ile görselleştirilmektedir. Test çalıştırması tamamlandıktan sonra, raporları açmak için:
+Testlerin sonuçları Allure Reports ve Cucumber'ın kendi raporlama sistemi ile görselleştirilmektedir. Testler tamamlandıktan sonra, raporları açmak için:
 
-Eğer paralel olmayan bir test koşumu yapıldıysa Allure tercih edilebilir ve raporu almak için;
+Paralel olmayan bir test koşumu yapıldıysa Allure'da tercih edilebilir ve raporu almak için;
 
 ```
 allure serve
@@ -325,6 +337,7 @@ Eğer browser bazlı paralel bir koşum gerçekleştirildiyse Cucumber raporlama
 ./Open-reports.sh
 ```
 komutu çalıştırılarak raporlara kolaylıkla erişim sağlanabilir. Bu sh dosyası istenen tek bir tarayıcının veya aynı anda üç tarayıcının da raporlarına seçenek ile erişilebilir.
+Daha hızlı erişim için her iki durumda da Cucumber önerilir.
 
 ![image](https://github.com/user-attachments/assets/c750256c-781f-44c0-9a6c-d67d69895c46)
 
@@ -349,5 +362,5 @@ komutu çalıştırılarak raporlara kolaylıkla erişim sağlanabilir. Bu sh do
 
 ## Projenin Gelişime Açık yönleri
 
-- Dependency ve version sorunları çözülerek çok daha sağlıklı bir Jenkin kurulumu yapılarak pipelineler hazırlanarak CI/CD süreçleri dahil edilebilir.
+- Dependency ve version sorunları çözülerek çok daha sağlıklı bir Jenkins kurulumu yapılabilir.
 - Hazır ve ücretsiz raporlama sistemleri yerine ücretli ama verimli veya özelleştirilmiş raporlar kullanılabilir.
