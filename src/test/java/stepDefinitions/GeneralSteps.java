@@ -38,6 +38,20 @@ public class GeneralSteps {
         automationMethods.waitForElementToBeVisible("CEREZLERI_KABUL_ET_BUTON", 10);
     }
 
+    @And("Assert that current URL is {string}")
+    public void assert_that_current_url_is(String expectedUrl) {
+        String browser = System.getProperty("browser", "chrome");
+        WebDriver driver = driverManager.getDriver(browser);
+        String actualUrl = driver.getCurrentUrl();
+
+        System.out.println("Beklenen URL: " + expectedUrl);
+        System.out.println("Mevcut URL: " + actualUrl);
+
+        if (!actualUrl.equals(expectedUrl)) {
+            throw new AssertionError("URL eşleşmiyor!\nBeklenen: " + expectedUrl + "\nMevcut: " + actualUrl);
+        }
+    }
+
     @And("Click {string}")
     public void clickElement(String element) throws Exception {
         automationMethods.waitAndClick(element);
@@ -68,6 +82,14 @@ public class GeneralSteps {
     public void assertElementIsClickable(String element) throws Exception {
         automationMethods.assertElementIsClickable(element);
     }
+
+    @And("Scroll to {string} element")
+    public void scrollToElement(String targetElementKey) throws Exception {
+        automationMethods.scrollToElementInsideScrollableDiv(targetElementKey);
+    }
+
+
+
 
     @And("Wait {int} seconds")
     public void wait_seconds(int seconds) throws InterruptedException {
@@ -171,6 +193,19 @@ public class GeneralSteps {
         }
     }
 
+    @And("Assert that all product titles contain only color {string}")
+    public void assertThatAllProductTitlesContainOnlyColor(String expectedColor) throws Exception {
+        automationMethods.assertProductTitlesContainOnlyColor(expectedColor);
+    }
+
+    @And("Assert that all product titles contain only storage {string}")
+    public void verifyThatAllListedProductsContainStorageInformation(String expectedStorage) throws Exception {
+        automationMethods.assertAllProductTitlesContainExpectedStorage(expectedStorage);
+    }
+
+
+
+
     @And("Assert that first 10 product prices are sorted in descending order")
     public void assertFirst10ProductPricesSortedDescending() throws Exception {
         List<WebElement> priceElements = automationMethods.findElements("PRODUCT_PRICE_LIST");
@@ -230,6 +265,12 @@ public class GeneralSteps {
         }
         System.out.println("Assertion Passed: Tüm kelimeler bulundu.");
     }
+
+    @And("Assert that {string} element is selected")
+    public void assertThatElementIsSelected(String key) throws Exception {
+        automationMethods.assertElementIsSelected(key);
+    }
+
 
 
 

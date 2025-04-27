@@ -122,6 +122,75 @@
     "PRODUCT_PRICE_LIST": {
         "element_value": "div.refurbishment-classified-price-container span",
         "element_type": "css"
+    },
+    "NOT_FOUND_DEVICES_WARNING_HEADER": {
+        "element_value": "//h4[@class='sui-global-surface-body-lead-bold' and normalize-space(text())='Aramanıza uygun cihaz bulunamadı']",
+        "element_type": "xpath"
+    },
+    "NOT_FOUND_DEVICES_WARNING_TEXT": {
+        "element_value": "//p[@class='sui-global-surface-body' and normalize-space(text())='Farklı bir cihaz veya özellikleri için tekrar arama yapabilirsiniz.']",
+        "element_type": "xpath"
+    },
+    "NOT_FOUND_DEVICES_WARNING_LOGO": {
+        "element_value": "//i[@class='sui-i-yepy sui-global-surface-body-lead me-4 sui-color-emphasis-disabled']",
+        "element_type": "xpath"
+    },
+    "TUMUNU_TEMIZLE_BUTTON": {
+        "element_value": "//a[@class='refurbishment-top-clear sui-global-surface-body-sm-bold sui-button']",
+        "element_type": "xpath"
+    },
+    "FIRST_PRODUCT_ON_LIST": {
+        "element_value": "//div[@class='refurbishment-content']//li[1]",
+        "element_type": "xpath"
+    },
+    "PRODUCTS_COLOR_LIST": {
+        "element_value": "//div[contains(@class,'searchResultsTitleValue')]//a[contains(@class,'classifiedTitle')]",
+        "element_type": "xpath"
+    },
+    "WHITE_COLOR_CIRCLE_AT_PRODUCT_DETAIL": {
+        "element_value": "//div[contains(@class,'color-circle') and .//img[@alt='Beyaz']]",
+        "element_type": "xpath"
+    },
+    "COLOR_FILTER_WHITE": {
+        "element_value": "//label[normalize-space(text())='Beyaz']",
+        "element_type": "xpath"
+    },
+    "COLOR_FILTER_WHITE_HEADER": {
+        "element_value": "//a[@title='Beyaz']",
+        "element_type": "xpath"
+    },
+    "KOZMETIK_DURUM_MUKEMMEL_BUTON_FILTER": {
+        "element_value": "//label[@for='excellent']",
+        "element_type": "xpath"
+    },
+    "KOZMETIK_DURUM_MUKEMMEL_BUTON_PRODUCT_DETAIL": {
+        "element_value": "//button[@id='excellent']",
+        "element_type": "xpath"
+    },
+    "KOZMETIK_DURUM_MUKEMMEL_HEADER": {
+        "element_value": "//a[@title='Mükemmel']",
+        "element_type": "xpath"
+    },
+    "PRODUCTS_STORAGE_LIST": {
+        "element_value": "//a[contains(@class, 'classifiedTitle')",
+        "element_type": "xpath"
+    },
+    "STORAGE_FILTER_64GB_BUTTON": {
+        "element_value": "//label[text()='64 GB']",
+        "element_type": "xpath"
+    },
+    "STORAGE_FILTER_64GB_HEADER": {
+        "element_value": "//a[@title='64 GB']",
+        "element_type": "xpath"
+    },
+    "STORAGE_64GB_BUTTON_PRODUCT_DETAIL": {
+        "element_value": "//button[contains(@class,'selected') and span[text()='64 GB']]\n",
+        "element_type": "xpath"
+    },
+    "STORAGE_SCROLL_TO_64GB": {
+        "element_value": "//ul[contains(@class, 'scroll-pane') and contains(@class, 'facetedSearchList')]",
+        "element_type": "xpath"
     }
+
 
 }

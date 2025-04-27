@@ -11,7 +11,21 @@ Feature: Sahibinden Yepy homepage
         * Assert that "YENILENMIS_TELEFON_AL_BUTON" element is visible
         * Assert that "KENDI_TELEFONUNU_SAT_BUTON" element is visible
 
-    @YEPY_HOMEPAGE @TESTt
+
+#URL KONTROLÜ
+    @YEPY_HOMEPAGE @TEST
+    Scenario: "Yenilenmiş Telefon Al" Page URL Control
+        * Go to url
+        * Click "CEREZLERI_KABUL_ET_BUTON"
+        * Click "YEPY_BUTTON"
+        * Wait 3 seconds
+        * Switch new window
+        * Click "YENILENMIS_TELEFON_AL_BUTON"
+        * Wait 1 seconds
+        * Assert that current URL is "https://www.sahibinden.com/yepy/yenilenmis-telefonlar"
+
+
+    @YEPY_HOMEPAGE @TEST
     Scenario: "Yenilenmiş Telefon Al" Landing Page UI Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"

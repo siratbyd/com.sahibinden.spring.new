@@ -57,8 +57,9 @@ if [ "$GRID_READY" = true ]; then
         exit 0
     fi
 else
-    echo "Selenium Grid başlatılamadı veya Docker izinleri verilmediği için kontrol edilemiyor! Lütfen aşağıdaki komutlarla manual kontrol edin:"
+    echo "Selenium Grid başlatılamadı veya Docker izinleri verilmediği için kontrol edilemiyor! Lütfen aşağıdaki komutlarla manual kontrol edin, containerlar görünüyorsa sorun yoktur:"
     echo "docker-compose ps"
     echo "docker-compose logs selenium-hub"
+    echo "Selenium Hub: http://localhost:4444/ui"
     exit 1
 fi 

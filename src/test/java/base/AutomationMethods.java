@@ -14,6 +14,7 @@ import utils.ElementManager;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.nio.file.Files;
@@ -103,6 +104,16 @@ public class AutomationMethods {
         return elementManager.findElement(key);
     }
 
+    public void scrollToElementInsideScrollableDiv(String targetElementKey) throws Exception {
+        WebElement targetElement = findElement(targetElementKey);
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) getDriver();
+        jsExecutor.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", targetElement);
+    }
+
+
+
+
+
     public void sendKeysToElement(String key, String text) throws Exception {
         WebElement element = findElement(key);
         try {
@@ -121,9 +132,40 @@ public class AutomationMethods {
         return getDriver().findElements(locator);
     }
 
+    public void assertProductTitlesContainOnlyColor(String expectedColor) throws Exception {
+        List<WebElement> productTitles = findElements("PRODUCTS_COLOR_LIST");
+        for (WebElement title : productTitles) {
+            String titleText = title.getText().toLowerCase();
+            if (!titleText.contains(expectedColor.toLowerCase())) {
+                throw new AssertionError("Ürün başlığında beklenen renk bulunamadı! Başlık: " + titleText);
+            }
+        }
+    }
+
+    public void assertAllProductTitlesContainExpectedStorage(String expectedStorage) throws Exception {
+        List<WebElement> productTitles = findElements("PRODUCTS_STORAGE_LIST");
+        for (WebElement title : productTitles) {
+            String titleText = title.getText().toLowerCase();
+            if (!titleText.contains(expectedStorage.toLowerCase())) {
+                throw new AssertionError("Ürün başlığında beklenen hafıza bulunamadı! Başlık: " + titleText);
+            }
+        }
+    }
+
+
+
     public void storeElementText(String key, String elementText) {
         memoryStorage.put(key, elementText);
         System.out.println("Stored text with key [" + key + "]: " + elementText);
+    }
+
+    public void assertElementIsSelected(String key) throws Exception {
+        WebElement element = findElement(key); // JSON'dan locator alıyor
+        String classAttribute = element.getAttribute("class");
+
+        if (classAttribute == null || !classAttribute.contains("selected")) {
+            throw new AssertionError("Element '" + key + "' is not selected!");
+        }
     }
 
 
@@ -133,4 +175,4 @@ public class AutomationMethods {
     public String getStoredText(String key) {
         return memoryStorage.get(key);
     }
-    }
+}
