@@ -177,7 +177,7 @@ while [ $(($(date +%s) - START_GRID_TIME)) -lt $MAX_GRID_WAIT ]; do
         GRID_READY=1
         break
     else
-        echo "Selenium Grid hazırlanıyor... ($(($(($(date +%s) - START_GRID_TIME)))s / ${MAX_GRID_WAIT}s)"
+        echo "Selenium Grid hazırlanıyor veya docker izinlerinden dolayı hazır olmasına rağmen bu süre hala devam ediyor, lütfen kontrol edin http://localhost:8080/ kontrol edin ... ($(($(($(date +%s) - START_GRID_TIME)))s / ${MAX_GRID_WAIT}s)"
         sleep 10
     fi
 done
