@@ -13,7 +13,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 
   @YEPY_FILTERS @TEST
-  Scenario: Filter Phone Number and Actual Phone Number Control
+  Scenario: YEPY-3 Filter Phone Number and Actual Phone Number Control
     * Wait 3 seconds
     * Save number from element "AVAILABLE_PHONE_NUMBER_ON_FILTER"
     * Click "FILTER_APPLE_BUTTON"
@@ -25,7 +25,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 
   @YEPY_FILTERS @TEST
-  Scenario: Min Price Control
+  Scenario: YEPY-4 Min Price Control
     * Click "FILTER_APPLE_BUTTON"
     * Wait 1 seconds
     * Write "12000" to "EN_DUSUK_FIYAT_TEXT_BOX" input field
@@ -36,7 +36,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
     * Assert that number of "FIRST_ITEM_PRICE" element is greater than or equal "12000"
 
   @YEPY_FILTERS @TEST
-  Scenario: Max Price Control
+  Scenario: YEPY-5 Max Price Control
     * Click "FILTER_APPLE_BUTTON"
     * Wait 1 seconds
     * Write "12000" to "EN_YUKSEK_FIYAT_TEXT_BOX" input field
@@ -50,7 +50,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 #DÜŞÜKTEN YÜKSEĞE FİYAT KONTROLÜ
   @YEPY_FILTERS @TEST
-  Scenario: Ascending Sorting Control
+  Scenario: YEPY-6 Ascending Sorting Control
     * Click "FILTER_APPLE_BUTTON"
     * Wait 3 seconds
     * Click "SORTING_ARROW_BUTTON"
@@ -61,7 +61,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 #YÜKSEKTEN DÜŞÜĞE FİYAT KONTROLÜ
   @YEPY_FILTERS @TEST
-  Scenario: Descending Sorting Control
+  Scenario: YEPY-7 Descending Sorting Control
     * Click "FILTER_APPLE_BUTTON"
     * Wait 3 seconds
     * Click "SORTING_ARROW_BUTTON"
@@ -72,7 +72,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 #LISTEDEKİ ÜRÜNLE, ÜRÜNE TIKLAYINCA ÇIKAN DETAYDAKİ ÜRÜNÜN AYNI OLUP OLMADIĞI KONTROLÜ
   @YEPY_FILTERS @TEST
-  Scenario: Comparing Lısted Product and Product Detail Infos
+  Scenario: YEPY-8 Comparing Lısted Product and Product Detail Infos
     * Wait 3 seconds
     * Save the texts from "FIRST_PRODUCT_MODEL_ISMI_LIST_PAGE" element
     * Save the texts from "FIRST_PRODUCT_RENK_AND_HAFIZA_LIST_PAGE" element
@@ -85,7 +85,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 
   @YEPY_FILTERS @TEST
-  Scenario: "Can Not Found Devices" Warning Control
+  Scenario: YEPY-9 "Can Not Found Devices" Warning Control
     * Wait 1 seconds
     * Write "999.999" to "EN_DUSUK_FIYAT_TEXT_BOX" input field
     * Click "SEARCH_BUTTON"
@@ -99,7 +99,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 
   @YEPY_FILTERS @TEST
-  Scenario: Color Filter Control
+  Scenario: YEPY-10 Color Filter Control
     * Click "COLOR_FILTER_WHITE"
     * Click "SEARCH_BUTTON"
     * Wait 2 seconds
@@ -111,7 +111,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 
   @YEPY_FILTERS @TEST
-  Scenario: Cosmetic Situation Filter Control
+  Scenario: YEPY-11 Cosmetic Situation Filter Control
     * Click "KOZMETIK_DURUM_MUKEMMEL_BUTON_FILTER"
     * Click "SEARCH_BUTTON"
     * Wait 2 seconds
@@ -122,7 +122,7 @@ Feature: Sahibinden Yepy Renewed Phone Filters
 
 
   @YEPY_FILTERS @TEST
-  Scenario: Storage Filter Control
+  Scenario: YEPY-12 Storage Filter Control
     * Wait 3 seconds
     * Scroll to "STORAGE_FILTER_64GB_BUTTON" element
     * Click "STORAGE_FILTER_64GB_BUTTON"

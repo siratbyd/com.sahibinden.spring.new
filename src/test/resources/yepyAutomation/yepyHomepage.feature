@@ -2,7 +2,7 @@ Feature: Sahibinden Yepy homepage
 
 
     @YEPY_HOMEPAGE @TEST
-    Scenario: Sahibinden Yepy Onboarding Page Control
+    Scenario: YEPY-1 Sahibinden Yepy Onboarding Page Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"
         * Click "YEPY_BUTTON"
@@ -14,7 +14,7 @@ Feature: Sahibinden Yepy homepage
 
 #URL KONTROLÜ
     @YEPY_HOMEPAGE @TEST
-    Scenario: "Yenilenmiş Telefon Al" Page URL Control
+    Scenario: YEPY-13 "Yenilenmiş Telefon Al" Page URL Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"
         * Click "YEPY_BUTTON"
@@ -26,7 +26,7 @@ Feature: Sahibinden Yepy homepage
 
 
     @YEPY_HOMEPAGE @TEST
-    Scenario: "Yenilenmiş Telefon Al" Landing Page UI Control
+    Scenario: YEPY-2 "Yenilenmiş Telefon Al" Homepage UI Control
         * Go to url
         * Click "CEREZLERI_KABUL_ET_BUTON"
         * Click "YEPY_BUTTON"
